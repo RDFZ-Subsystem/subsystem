@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> Yule - Reciter </title>
+        <link href="../static/css/white_theme.css" rel="stylesheet">
+        {% if t_theme == 'black' %}
+        <link href="../static/css/black_theme.css" rel="stylesheet">
+        {% endif %}
+    </head>
+    <body>
+        <div class="title">
+            Reciter
+            <a href="/"> Home </a>
+            |
+            <a href="/lists"> Wordlists </a>
+            |
+            <a href="/forum"> Forum </a>
+            |
+            <a href="/yule"> Yule </a>
+            |
+            <a href="/userlist"> Users </a>
+            |
+            {% if t_username == None %}
+                <a href="/login"> Login </a>
+            {% endif %}
+            {% if t_username != None %}
+                <a href="/login"> Switch Account </a>
+            |
+                <a href="/profile?username={{ t_username }}"> {{ t_username }} </a>
+            {% endif %}
+        </div>
+        <div class="contents">
+            <h2>Yule</h2>
+            <p>A project before Christmas.</p>
+            <a href="/articles?id=0df4c672-b375-11ef-bf2b-57fb35f9416a">Yule Feedback Center</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Games</th>
+                        <th scope="col">Hot</th>
+                        <th scope="col">Creator</th>
+                        <th scope="col">Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in t_dics %}
+                        <tr>
+                            <td scope="row">
+                                <a href="/intro?id={{ i['id'] }}">{{ i['name'] }} </a>
+                            </td>
+                            <td>{{ i['hot'] }}</td>
+                            <td><a href="/profile?id={{ i['creator'] }}">{{ i['creator'] }} </a></td>
+                            <td>{{ i['timef'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="copy">
+            Developed by PeterLu & ycy. <br>
+            2024, &copy Reciter Dev Team <br>
+            All rights reserved.
+        </div>
+    </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> Creating Articles - Reciter </title>
+        <link href="../static/css/white_theme.css" rel="stylesheet">
+        {% if t_theme == 'black' %}
+        <link href="../static/css/black_theme.css" rel="stylesheet">
+        {% endif %}
+    </head>
+    <body>
+        <div class="title">
+            Subsystem
+            <a href="/"> Home </a>
+            |
+            <a href="/lists"> Wordlists </a>
+            |
+            <a href="/forum"> Forum </a>
+            |
+            <a href="/yule"> Yule </a>
+            |
+            <a href="/userlist"> Users </a>
+            |
+            {% if t_username == None %}
+                <a href="/login"> Login </a>
+            {% endif %}
+            {% if t_username != None %}
+                <a href="/login"> Switch Account </a>
+            |
+                <a href="/profile?username={{ t_username }}"> {{ t_username }} </a>
+            {% endif %}
+        </div>
+
+        <div class="contents">
+            <h2>Create an Article</h2>
+            <form action="/check_articles" method="post">
+                <input type="text" name="title" placeholder="Title" required maxlength="64">
+                <br>
+                <textarea name="content" placeholder="Contents" required class="passage" maxlength="8000"></textarea>
+                <br>
+                Supporting
+                <a href="https://help.luogu.com.cn/rules/academic/handbook/markdown">Markdown</a>
+                and
+                <a href="https://katex.org/docs/supported.html">KaTeX</a>
+                <br>
+                {% if t_admin %}
+                    <select name="top">
+                        <option value="True">Top</option>
+                        <option value="False">Not on top</option>
+                    </select>
+                    <br>
+                {% endif %}
+
+                <br>
+                <img src="data:image/png;base64,{{ t_captcha_image | safe }}" alt="Captcha">
+                <input type="text" name="user_captcha" placeholder="Graph validate code" maxlength="4" required>
+                <br>
+                <p class="error">{{ t_error }}</p>
+                <br>
+                <input type="submit" value="Done">
+            </form>
+        </div>
+        <div class="copy">
+            Developed by PeterLu. <br>
+            2024, &copy Reciter Dev Team <br>
+            All rights reserved.
+        </div>
+    </body>
+</html>
