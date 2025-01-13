@@ -19,8 +19,10 @@ if __name__ == "__main__":
     folder_path_intro = 'templates/yule/intro'
     folder_path_source = 'templates/yule/source'
     intro_files = get_all_files_in_directory(folder_path_intro)
-    source_files = get_all_files_in_directory(folder_path_intro)
+    source_files = get_all_files_in_directory(folder_path_source)
     for i in range(0, len(intro_files)):
         intro_files[i] = intro_files[i][10:]
+        print(intro_files[i])
     for i in range(0, len(source_files)):
         source_files[i] = source_files[i][10:]
+        print(source_files[i])
