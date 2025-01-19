@@ -6,10 +6,11 @@ import markdown
 import bleach
 import re
 import defender
+import os
 
 
 forum_app = Blueprint('forum_app', __name__)
-forum_app.secret_key = 'aiueb823hfkah38whwkdnfea874hiwn'
+# forum_app.secret_key = os.urandom(24)
 client = pymongo.MongoClient()
 db = client.reciter
 

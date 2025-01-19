@@ -5,10 +5,11 @@ import time
 import markdown
 import bleach
 import re
+import os
 
 
 books_app = Blueprint('books_app', __name__)
-books_app.secret_key = 'aiueb823hfkah38whwkdnfea874hiwn'
+# books_app.secret_key = os.urandom(24)
 client = pymongo.MongoClient()
 db = client.reciter
 

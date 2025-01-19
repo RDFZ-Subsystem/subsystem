@@ -5,10 +5,11 @@ import markdown
 import bleach
 import re
 import defender
+import os
 
 
 user_app = Blueprint('user_app', __name__)
-user_app.secret_key = 'aiueb823hfkah38whwkdnfea874hiwn'
+# user_app.secret_key = os.urandom(24)
 client = pymongo.MongoClient()
 db = client.reciter
 

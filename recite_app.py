@@ -4,10 +4,11 @@ import uuid
 import random
 import time
 import defender
+import os
 
 
 recite_app = Blueprint('recite_app', __name__)
-recite_app.secret_key = 'aiueb823hfkah38whwkdnfea874hiwn'
+# recite_app.secret_key = os.urandom(24)
 client = pymongo.MongoClient()
 db = client.reciter
 

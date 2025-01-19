@@ -5,9 +5,10 @@ import time
 import markdown
 import bleach
 import re
+import os
 
 yule_app = Blueprint('yule_app', __name__)
-yule_app.secret_key = 'aiueb823hfkah38whwkdnfea874hiwn'
+# yule_app.secret_key = os.urandom(24)
 client = pymongo.MongoClient()
 db = client.reciter
 
