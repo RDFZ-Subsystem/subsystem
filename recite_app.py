@@ -540,17 +540,20 @@ def del_list():
     if session.get('username') == None:
         return redirect('/login')
     id = request.args.get('id')
-    userdic = db.users.find_one({'username': session['username']})
-    dic = db.lists.find_one({'id': id})
+    # userdic = db.users.find_one({'username': session['username']})
+    userdic = dbConnecter.read_data('users', 'username', session['username'])[0]
+    # dic = db.lists.find_one({'id': id})
+    dic = dbConnecter.read_data('lists', 'id', id)[0]
     if dic['username'] == session['username'] or userdic['admin']:
-        db.lists.delete_one({'id': id})
-        dics = list(db.users.find())
-        for i in dics:
-            for j in range(0, len(i['list_record'])):
-                if i['list_record'][j]['id'] == id:
-                    del i['list_record'][j]
-                    break
-            db.users.update({'username': i['username']}, i)
+        # db.lists.delete_one({'id': id})
+        dbConnecter.delete_data('lists', 'id', id)
+        # dics = list(db.users.find())
+        # for i in dics:
+        #     for j in range(0, len(i['list_record'])):
+        #         if i['list_record'][j]['id'] == id:
+        #             del i['list_record'][j]
+        #             break
+        #     db.users.update({'username': i['username']}, i)
         return redirect('/lists')
     else:
         return 'No permission'
@@ -563,7 +566,7 @@ def modify_list():
     captcha_text, captcha_image = defender.generate_captcha()
     session['captcha'] = captcha_text.lower()
     id = request.args.get('id')
-    dic = dbConnecter.read_data('lists', 'id', id)
+    dic = dbConnecter.read_data('lists', 'id', id)[0]
     dic['en'] = toList(dic['en'])
     dic['zh'] = toList(dic['zh'])
     if (dic['sm']):
