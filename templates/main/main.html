@@ -29,29 +29,28 @@
             {% endif %}
         </div>
 
-        <div class="contents">
-            <h1> Subsystem </h1>
-            <h3> News & Notice </h3>
-            {% for i in t_top %}
-                <a href="/articles?id={{ i['id'] }}"> {{ i['title'] }} </a>
-                <br>
-            {% endfor %}
-            <h3> Recent Articles </h3>
-                {% for i in t_rec %}
-                    <a href="/articles?id={{ i['id'] }}"> {{ i['title'] }} </a>
-                    <br>
+<!--        <div class="contents">-->
+<!--            <h1> Subsystem </h1>-->
+<!--            <h3> News & Notice </h3>-->
+<!--            {% for i in t_top %}-->
+<!--                <a href="/articles?id={{ i['id'] }}"> {{ i['title'] }} </a>-->
+<!--                <br>-->
+<!--            {% endfor %}-->
+<!--            <h3> Recent Articles </h3>-->
+<!--                {% for i in t_rec %}-->
+<!--                    <a href="/articles?id={{ i['id'] }}"> {{ i['title'] }} </a>-->
+<!--                    <br>-->
 
-                {% endfor %}
-            <h3> Latest Wordlists </h3>
-                {% for i in t_lists %}
-                    <a href="/show_list?id={{ i['id'] }}"> {{ i['listname'] }} </a>
-                    <br>
-                {% endfor %}
-        </div>
+<!--                {% endfor %}-->
+<!--            <h3> Latest Wordlists </h3>-->
+<!--                {% for i in t_lists %}-->
+<!--                    <a href="/show_list?id={{ i['id'] }}"> {{ i['listname'] }} </a>-->
+<!--                    <br>-->
+<!--                {% endfor %}-->
+<!--        </div>-->
 
         <div class="copy">
-            Developed by PeterLu. <br>
-            2024, &copy Reciter Dev Team <br>
+            2024 - 2025, &copy <a href="https://github.com/RDFZ-Subsystem"> Subsystem Dev Team </a> <br>
             All rights reserved.
         </div>
     </body>

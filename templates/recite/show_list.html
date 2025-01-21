@@ -10,10 +10,10 @@
     </head>
     <body>
         <div class="title">
-            Reciter
+            Subsystem - Reciter
             <a href="/"> Home </a>
             |
-            <a href="/lists"> Wordlists </a>
+            <a href="/lists"> Reciter </a>
             |
             <a href="/forum"> Forum </a>
             |
@@ -37,7 +37,7 @@
             <br>
                 <a href="/check_del_list?id={{ t_wordlist['id'] }}">Delete</a>
             {% endif %}
-            <form action="/prepare_recite" method="post">
+            <form action="/recite" method="get">
                 <input type="hidden" name="id" value="{{ t_wordlist['id'] }}">
                 <input type="submit" name="pattern" value="Learn meaning">
                 <input type="submit" name="pattern" value="Learn spelling">
@@ -81,10 +81,10 @@
                 </tbody>
             </table>
         </div>
-        <div class="copy">
-            Developed by PeterLu. <br>
-            2024, &copy Reciter Dev Team <br>
-            All rights reserved.
-        </div>
+       <div class="copy">
+        Developed by <a href="https://github.com/zihanpeter">zihanpeter</a>. <br>
+        2024 - 2025, &copy <a href="https://github.com/RDFZ-Subsystem"> Subsystem Dev Team </a> <br>
+        All rights reserved.
+    </div>
     </body>
 </html>

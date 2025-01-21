@@ -1,36 +1,117 @@
-import pymysql
+import mysql.connector
+import os
 
 
-MYSQL_HOST = "localhost"
-MYSQL_USER = "root"
-MYSQL_PASSWORD = "your_mysql_password"
-MYSQL_DB = "your_mysql_database"
+'''
+// Create DATABASE
+CREATE DATABASE database_name;
 
 
-def connect_to_mysql():
+// Create TABLE
+CREATE TABLE table_name (
+    column1 datatype constraint,
+    column2 datatype constraint,
+    column3 datatype constraint,
+    ...
+);
+
+'''
+
+def connect_to_db():
+    return mysql.connector.connect(
+        host="localhost",
+        user="root",
+        # password=os.getenv('MYSQL_PASSWORD'),
+        password="my_password",
+        database='subsystem'
+    )
+
+def genPlaceholder(valuename):
+    placeholder = '(%s'
+    cnt = 0
+    for i in valuename:
+       if i == ',':
+           cnt += 1
+    for i in range(cnt):
+        placeholder += ', %s'
+    placeholder += ')'
+    return placeholder
+
+def insert_data(listname, valuename, values): # str str tuple
+    connection = connect_to_db()
+    cursor = connection.cursor()
     try:
-        connection = pymysql.connect(host=MYSQL_HOST,
-                                     user=MYSQL_USER,
-                                     password=MYSQL_PASSWORD,
-                                     database=MYSQL_DB)
-        return connection
-    except pymysql.MySQLError as e:
-        print(f"连接 MySQL 失败: {e}")
-        return None
+        placeholder = genPlaceholder(valuename)
+        print(placeholder)
+        sql = 'INSERT INTO ' + listname + ' ' + valuename + ' VALUES ' + placeholder + ';'
+        cursor.execute(sql, values)
+        connection.commit()
+        print(f"Inserted {cursor.rowcount} record(s).")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+    finally:
+        cursor.close()
+        connection.close()
 
-def insert_data_to_mysql(cursor, collection_name, data):
-    if not data:
-        return
+def read_data(listname, con='', val=None):
+    connection = connect_to_db()
+    cursor = connection.cursor(dictionary=True)
+    try:
+        if (con == ''):
+            sql = 'SELECT * FROM ' + listname + ';'
+            cursor.execute(sql)
+        else:
+            sql = 'SELECT * FROM ' + listname + ' WHERE ' + con + ' = %s;'
+            cursor.execute(sql, (val,))
+        results = cursor.fetchall()
+        # for row in results:
+        #     print(row)
+        print(results)
+        return results
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+    finally:
+        cursor.close()
+        connection.close()
 
-    # 构建插入数据的 SQL 语句
-    columns = data[0].keys()
-    columns_str = ", ".join([f"`{col}`" for col in columns])
-    values_placeholder = ", ".join(["%s"] * len(columns))
+def update_data(listname, con, val1, tar, val2):
+    connection = connect_to_db()
+    cursor = connection.cursor()
+    try:
+        sql = 'UPDATE ' + listname + ' SET ' + tar + ' = %s WHERE ' + con + ' = %s;'
+        cursor.execute(sql, (val2, val1))
+        connection.commit()
+        print(f"Updated {cursor.rowcount} record(s).")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+    finally:
+        cursor.close()
+        connection.close()
 
-    insert_query = f"INSERT INTO `{collection_name}` ({columns_str}) VALUES ({values_placeholder})"
+def delete_data(listname, con, val):
+    connection = connect_to_db()
+    cursor = connection.cursor()
+    try:
+        sql = 'DELETE FROM ' + listname + ' WHERE ' + con + ' = %s;'
+        cursor.execute(sql, (val,))
+        connection.commit()
+        print(f"Deleted {cursor.rowcount} record(s).")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+    finally:
+        cursor.close()
+        connection.close()
 
-    # 插入数据
-    for item in data:
-        values = tuple(item.get(col, None) for col in columns)
-        cursor.execute(insert_query, values)
-
+# 调用函数测试
+if __name__ == "__main__":
+    # insert_data('test2', '(test1, test2)', ('["1", "2", "3"]', '["1", "2", "3"]'))
+    # print(read_data('test2'))
+    # print(list(read_data('test2')[0]['test1']))
+    # print(read_data('test', 'timef', 2024))
+    # update_data('test', 'username', 'hello', 'timef', 2088)
+    # delete_data('test', 'timef', 2024)
+    # print(read_data('test'))
+    # a = ["1", "2", "3"]
+    # print(str(a))
+    # read_data()
+    insert_data('test3', '(h1, h2)', ('19238u8u2u4990', '2134532456453256y6432435676564'))

@@ -1,19 +1,78 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--    <head>-->
+<!--        <meta charset="UTF-8">-->
+<!--        <title> {{ t_listname }} - Learn spelling - Reciter</title>-->
+<!--        <link href="../static/css/white_theme.css" rel="stylesheet">-->
+<!--        {% if t_theme == 'black' %}-->
+<!--        <link href="../static/css/black_theme.css" rel="stylesheet">-->
+<!--        {% endif %}-->
+<!--    </head>-->
+<!--    <body>-->
+<!--        <div class="title">-->
+<!--            Reciter-->
+<!--            <a href="/"> Home </a>-->
+<!--            |-->
+<!--            <a href="/lists"> Wordlists </a>-->
+<!--            |-->
+<!--            <a href="/forum"> Forum </a>-->
+<!--            |-->
+<!--            <a href="/yule"> Yule </a>-->
+<!--            |-->
+<!--            <a href="/userlist"> Users </a>-->
+<!--            |-->
+<!--            {% if t_username == None %}-->
+<!--                <a href="/login"> Login </a>-->
+<!--            {% endif %}-->
+<!--            {% if t_username != None %}-->
+<!--                <a href="/login"> Switch Account </a>-->
+<!--            |-->
+<!--                <a href="/profile?username={{ t_username }}"> {{ t_username }} </a>-->
+<!--            {% endif %}-->
+<!--        </div>-->
+<!--        <div class="contents_center">-->
+<!--            Pattern: {{ t_pat }}-->
+<!--            <br>-->
+<!--            {{ t_num }} {{ t_rem }} {{ t_fir }}-->
+<!--            <br>-->
+<!--            <h1>{{ t_zh }}</h1>-->
+<!--            <form action="/check_recite" method="get">-->
+<!--                <input type="text" name="ans" placeholder="Spell here" autocomplete="off" autofocus>-->
+<!--                <br>-->
+<!--                <input type="submit" value="Submit">-->
+<!--            </form>-->
+<!--        </div>-->
+<!--       <div class="copy">-->
+<!--            Developed by PeterLu. <br>-->
+<!--            2024, &copy Reciter Dev Team <br>-->
+<!--            All rights reserved.-->
+<!--        </div>-->
+<!--    </body>-->
+<!--</html>-->
+
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title> {{ t_listname }} - Learn spelling - Reciter</title>
-        <link href="../static/css/white_theme.css" rel="stylesheet">
-        {% if t_theme == 'black' %}
-        <link href="../static/css/black_theme.css" rel="stylesheet">
-        {% endif %}
-    </head>
-    <body>
-        <div class="title">
-            Reciter
+<html>
+<head>
+    <title>{{ t_listname }} - Learn spelling - Reciter</title>
+    <script>
+        let en = {{ t_en | tojson }};
+        let zh = {{ t_zh | tojson }};
+        let sm = {{ t_sm }};
+        let sen = {{ t_sen | tojson }};
+    </script>
+    <script src="../static/javascript/recite_spelling.js"></script>
+    <meta charset="UTF-8">
+    <link href="../static/css/white_theme.css" rel="stylesheet">
+    {% if t_theme == 'black' %}
+    <link href="../static/css/black_theme.css" rel="stylesheet">
+    {% endif %}
+</head>
+<body>
+    <div class="title">
+            Subsystem - Reciter
             <a href="/"> Home </a>
             |
-            <a href="/lists"> Wordlists </a>
+            <a href="/lists"> Reciter </a>
             |
             <a href="/forum"> Forum </a>
             |
@@ -30,22 +89,24 @@
                 <a href="/profile?username={{ t_username }}"> {{ t_username }} </a>
             {% endif %}
         </div>
-        <div class="contents_center">
-            Pattern: {{ t_pat }}
-            <br>
-            {{ t_num }} {{ t_rem }} {{ t_fir }}
-            <br>
-            <h1>{{ t_zh }}</h1>
-            <form action="/check_recite" method="get">
-                <input type="text" name="ans" placeholder="Spell here" autocomplete="off" autofocus>
-                <br>
-                <input type="submit" value="Submit">
-            </form>
-        </div>
-       <div class="copy">
-            Developed by PeterLu. <br>
-            2024, &copy Reciter Dev Team <br>
-            All rights reserved.
-        </div>
-    </body>
+    <div class="contents_center">
+        Pattern: {{ t_pat }}
+        <div id="first"></div>
+        <div id="remain"></div>
+        <div id="wordcnt"></div>
+        <h1 id="word"></h1>
+        <h1 id="tip"></h1>
+        <p id="sen"></p>
+        <input type="text" id="input" onkeydown="if (event.key === 'Enter') checkInput();">
+        <br>
+        <button id="submit" onclick="checkInput();">Submit</button>
+        <br>
+        <a href="/reciter" id="finish"></a>
+    </div>
+    <div class="copy">
+        Developed by <a href="https://github.com/zihanpeter">zihanpeter</a>. <br>
+        2024 - 2025, &copy <a href="https://github.com/RDFZ-Subsystem"> Subsystem Dev Team </a> <br>
+        All rights reserved.
+    </div>
+</body>
 </html>

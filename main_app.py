@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, Blueprint
 import pymongo
 import time
 import os
+import dbConnecter
 
 from user_app import user_app
 from recite_app import recite_app
@@ -9,7 +10,7 @@ from forum_app import forum_app
 from yule_app import yule_app
 
 app = Flask(__name__)
-app.secret_key = os.urandom(24)
+app.secret_key = '123'
 app.register_blueprint(user_app)
 app.register_blueprint(recite_app)
 app.register_blueprint(forum_app)

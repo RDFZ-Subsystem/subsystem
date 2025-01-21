@@ -6,12 +6,13 @@ import bleach
 import re
 import defender
 import os
+import dbConnecter
 
 
 user_app = Blueprint('user_app', __name__)
-# user_app.secret_key = os.urandom(24)
-client = pymongo.MongoClient()
-db = client.reciter
+user_app.secret_key = '123'
+# client = pymongo.MongoClient()
+# db = client.reciter
 
 
 '''
@@ -20,10 +21,18 @@ db = client.reciter
     username 用户名
     password 密码
     timef 注册时间
-    list_record 背诵完成信息
     intro 个人简介
     theme 颜色主题
     admin 是否为管理员
+    
+    CREATE TABLE users (
+        username VARCHAR(64), 
+        password VARCHAR(64), 
+        timef VARCHAR(64), 
+        intro TEXT, 
+        theme VARCHAR(64), 
+        admin BOOL
+    );
 '''
 
 
@@ -55,8 +64,9 @@ def check_login():
                                t_captcha_image=captcha_image)
     username = request.form['username']
     password = request.form['password']
-    res = db.users.find_one({'username': username, 'password': password})
-    if res == None:
+    # res = db.users.find_one({'username': username, 'password': password})
+    res = dbConnecter.read_data('users', 'username', username)
+    if res == [] or res[0]['password'] != password:
         captcha_text, captcha_image = defender.generate_captcha()
         session['captcha'] = captcha_text.lower()
         return render_template('user/login.html',
@@ -65,7 +75,7 @@ def check_login():
                                t_captcha_image=captcha_image)
     else:
         session['username'] = username
-        session['theme'] = res['theme']
+        session['theme'] = res[0]['theme']
         return redirect('/')
 
 
@@ -91,10 +101,11 @@ def check_register():
     username = request.form['username']
     password = request.form['password']
     password2 = request.form.get('password2')
-    res = db.users.find_one({'username': username})
+    # res = db.users.find_one({'username': username})
+    res = dbConnecter.read_data('users', 'username', username)
     now = time.localtime()
     now_temp = time.strftime("%Y-%m-%d %H:%M", now)
-    if res == None:
+    if res == []:
         flag = True
         for i in username:
             if ('A' <= i <= 'Z') or ('a' <= i <= 'z') or ('0' <= i <= '9') or ('\u4e00' <= i <= '\u9fff'):
@@ -113,13 +124,14 @@ def check_register():
                                    t_error='Two passwords are different.',
                                    t_theme=get_theme(),
                                    t_captcha_image=captcha_image)
-        db.users.insert_one({'username': username, 
-                             'password': password, 
-                             'timef': now_temp, 
-                             'list_record': [],
-                             'intro': 'Nothing',
-                             'theme': 'white',
-                             'admin': False})
+        dbConnecter.insert_data('users', '(username, password, timef, intro, theme, admin)', (username, password, now_temp, 'Nothing', 'white', False))
+        # db.users.insert_one({'username': username,
+        #                      'password': password,
+        #                      'timef': now_temp,
+        #                      'list_record': [],
+        #                      'intro': 'Nothing',
+        #                      'theme': 'white',
+        #                      'admin': False})
         session['username'] = username
         session['theme'] = 'white'
         return redirect('/')
@@ -137,10 +149,16 @@ def profile():
     captcha_text, captcha_image = defender.generate_captcha()
     session['captcha'] = captcha_text.lower()
     username = request.args.get('username')
-    userdic = db.users.find_one({'username': username})
-    userlist = db.lists.find({'username': username})
-    userlist = list(userlist)
-    articleslist = list(db.articles.find({'username': username}))
+    # userdic = db.users.find_one({'username': username})
+    # userlist = db.lists.find({'username': username})
+    print(username)
+    userdic = dbConnecter.read_data('users', 'username', username)[0]
+    print(userdic)
+
+
+
+    # userlist = list(userlist)
+    # articleslist = list(db.articles.find({'username': username}))
     intro = userdic['intro']
     intro = markdown.markdown(intro, extensions=['markdown.extensions.fenced_code',
                                                  'markdown.extensions.codehilite',
@@ -150,14 +168,15 @@ def profile():
     if session.get('username') == None:
         admin = False
     else:
-        admin = db.users.find_one({'username': session['username']})['admin']
+        # admin = db.users.find_one({'username': session['username']})['admin']
+        admin = dbConnecter.read_data('users', 'username', session['username'])[0]['admin']
     return render_template('user/profile.html', 
                            t_realname=session.get('username'),
                            t_username=username, 
                            t_timef=userdic['timef'], 
-                           t_userlist=userlist, 
-                           t_list_record=userdic['list_record'], 
-                           t_articleslist=articleslist,
+                           # t_userlist=userlist,
+                           # t_list_record=userdic['list_record'],
+                           # t_articleslist=articleslist,
                            t_intro=intro,
                            t_admin=admin,
                            t_theme=get_theme(),
@@ -177,14 +196,16 @@ def change_password():
     resOld = request.form['old']
     resNew = request.form['new']
     new2 = request.form.get('new2')
-    userdic = db.users.find_one({'username': session['username']})
+    # userdic = db.users.find_one({'username': session['username']})
+    userdic = dbConnecter.read_data('users', 'username', session['username'])[0]
     if resNew != new2:
         return render_template('user/profile.html',
                                t_error='Two passwords are different.',
                                t_theme=get_theme())
     if resOld == userdic['password']:
-        userdic['password'] = resNew
-        db.users.update({'username': session['username']}, userdic)
+        # userdic['password'] = resNew
+        # db.users.update({'username': session['username']}, userdic)
+        dbConnecter.update_data('users', 'username', session['username'], 'password', resNew)
         return redirect('/')
     else:
         return render_template('user/profile.html',
@@ -195,16 +216,19 @@ def change_password():
 @user_app.route('/change_theme', methods=['POST']) # 更改颜色主题
 def change_theme():
     theme = request.form.get('theme')
-    dic = db.users.find_one({'username': session['username']})
-    dic['theme'] = theme
+    # dic = db.users.find_one({'username': session['username']})
+    # dic = dbConnecter.read_data('users', 'username', session['username'])
+    # dic['theme'] = theme
     session['theme'] = theme
-    db.users.update({'username': session['username']}, dic)
+    # db.users.update({'username': session['username']}, dic)
+    dic = dbConnecter.update_data('users', 'username', session['username'], 'theme', theme)
     return redirect('/profile?username=' + session['username'])
     
 
 @user_app.route('/userlist')
 def userlist():
-    dics = list(db.users.find())
+    # dics = list(db.users.find())
+    dics = dbConnecter.read_data('users')
     dics.sort(key = lambda x: x['timef'])
     return render_template('user/userlist.html',
                            t_username=session.get('username'),
@@ -217,7 +241,8 @@ def modify_intro():
     captcha_text, captcha_image = defender.generate_captcha()
     session['captcha'] = captcha_text.lower()
     username = request.args.get('username')
-    dic = db.users.find_one({'username': username})
+    # dic = db.users.find_one({'username': username})
+    dic = dbConnecter.read_data('users', 'username', username)[0]
     if username == session['username'] or dic[session['username']]:
         # info = ''
         # for i in dic['intro']:
@@ -266,7 +291,8 @@ def attack_cleaner(con):
 @user_app.route('/modifier_intro', methods=['POST'])
 def modifier_intro():
     username = request.form.get('username')
-    dic = db.users.find_one({'username': username})
+    # dic = db.users.find_one({'username': username})
+    dic = dbConnecter.read_data('users', 'username', username)[0]
     user_captcha = request.form.get('user_captcha').lower()
     if user_captcha != session['captcha']:
         captcha_text, captcha_image = defender.generate_captcha()
@@ -278,8 +304,9 @@ def modifier_intro():
                                t_captcha_image=captcha_image,
                                t_error='Wrong graph validate code')
 
-    intro = request.form.get('intro')
-    dic = db.users.find_one({'username': username})
+    intro = attack_cleaner(request.form.get('intro'))
+    # dic = db.users.find_one({'username': username})
+    # dic = dbConnecter.read_data('users', 'username', username)[0]
     # s = ''
     # info = []
     # for i in intro:
@@ -291,6 +318,7 @@ def modifier_intro():
     #     else:
     #         s += i
     # info.append(s)
-    dic['intro'] = attack_cleaner(intro)
-    db.users.update({'username': username}, dic)
+    # dic['intro'] = attack_cleaner(intro)
+    # db.users.update({'username': username}, dic)
+    dbConnecter.update_data('users', 'username', username, 'intro', intro)
     return redirect('/profile?username=' + username)

@@ -10,11 +10,11 @@
     </head>
 
     <body>
-        <div class="title">
-            Reciter
+         <div class="title">
+            Subsystem - Reciter
             <a href="/"> Home </a>
             |
-            <a href="/lists"> Wordlists </a>
+            <a href="/lists"> Reciter </a>
             |
             <a href="/forum"> Forum </a>
             |
@@ -31,7 +31,7 @@
                 <a href="/profile?username={{ t_username }}"> {{ t_username }} </a>
             {% endif %}
         </div>
-        <h2>Wordlists</h2>
+        <h2>Reciter</h2>
         <div class="contents">
             <a href="/create"> Create a Wordlist </a>
 
@@ -42,7 +42,7 @@
             </form>
 
             <h3>Select: </h3>
-            <form action="/lists" method="get">
+            <form action="/reciter" method="get">
                 <select name="difficulty">
                     <option value="all">All</option>
                     <option value="1">1</option>
@@ -70,7 +70,7 @@
                 <thead>
                     <tr>
                         <th scope="col">List name</th>
-                        <th scope="col">Creater</th>
+                        <th scope="col">Creator</th>
                         <th scope="col">Difficulty</th>
                         <th scope="col">Time</th>
                     </tr>
@@ -102,7 +102,7 @@
                 <thead>
                     <tr>
                         <th scope="col">List name</th>
-                        <th scope="col">Creater</th>
+                        <th scope="col">Creator</th>
                         <th scope="col">Difficulty</th>
                         <th scope="col">Time</th>
                     </tr>
@@ -130,9 +130,9 @@
         {% endif %}
 
         <div class="copy">
-            Developed by PeterLu. <br>
-            2024, &copy Reciter Dev Team <br>
-            All rights reserved.
-        </div>
+        Developed by <a href="https://github.com/zihanpeter">zihanpeter</a>. <br>
+        2024 - 2025, &copy <a href="https://github.com/RDFZ-Subsystem"> Subsystem Dev Team </a> <br>
+        All rights reserved.
+    </div>
     </body>
 </html>

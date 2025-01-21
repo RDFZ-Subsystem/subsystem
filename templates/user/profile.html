@@ -86,83 +86,83 @@
                 {{ t_intro|safe }}
             </div>
 
-            <h3>Wordlists provided</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">List name</th>
-                        <th scope="col">Difficulty</th>
-                        <th scope="col">Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in t_userlist %}
-                        <tr>
-                            <td>
-                                <a href="/show_list?id={{ i['id'] }}"> {{ i['listname'] }} </a>
-                            </td>
-                            <td>
-                                {{ i['difficulty'] }}
-                            </td>
-                            <td>
-                                {{ i['timef'] }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<!--            <h3>Wordlists provided</h3>-->
+<!--            <table>-->
+<!--                <thead>-->
+<!--                    <tr>-->
+<!--                        <th scope="col">List name</th>-->
+<!--                        <th scope="col">Difficulty</th>-->
+<!--                        <th scope="col">Time</th>-->
+<!--                    </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                    {% for i in t_userlist %}-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <a href="/show_list?id={{ i['id'] }}"> {{ i['listname'] }} </a>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                {{ i['difficulty'] }}-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                {{ i['timef'] }}-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    {% endfor %}-->
+<!--                </tbody>-->
+<!--            </table>-->
 
-            <h3>Records</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">List name</th>
-                        <th scope="col">Creater</th>
-                        <th scope="col">Difficulty</th>
-                        <th scope="col">Finish time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in t_list_record %}
-                        <tr>
-                            <td>
-                                <a href="/show_list?id={{ i['id'] }}"> {{ i['listname'] }} </a>
-                            </td>
-                            <td>
-                                <a href="/profile?username={{ i['username'] }}"> {{ i['username'] }} </a>
-                            </td>
-                            <td>
-                                {{ i['difficulty'] }}
-                            </td>
-                            <td>
-                                {{ i['timef'] }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<!--            <h3>Records</h3>-->
+<!--            <table>-->
+<!--                <thead>-->
+<!--                    <tr>-->
+<!--                        <th scope="col">List name</th>-->
+<!--                        <th scope="col">Creater</th>-->
+<!--                        <th scope="col">Difficulty</th>-->
+<!--                        <th scope="col">Finish time</th>-->
+<!--                    </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                    {% for i in t_list_record %}-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <a href="/show_list?id={{ i['id'] }}"> {{ i['listname'] }} </a>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <a href="/profile?username={{ i['username'] }}"> {{ i['username'] }} </a>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                {{ i['difficulty'] }}-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                {{ i['timef'] }}-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    {% endfor %}-->
+<!--                </tbody>-->
+<!--            </table>-->
 
-            <h3>Posted Articles</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for i in t_articleslist %}
-                        <tr>
-                            <td>
-                                <a href="/articles?id={{ i['id'] }}"> {{ i['title'] }} </a>
-                            </td>
-                            <td>
-                                {{ i['timef'] }}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+<!--            <h3>Posted Articles</h3>-->
+<!--            <table>-->
+<!--                <thead>-->
+<!--                    <tr>-->
+<!--                        <th scope="col">Title</th>-->
+<!--                        <th scope="col">Time</th>-->
+<!--                    </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                    {% for i in t_articleslist %}-->
+<!--                        <tr>-->
+<!--                            <td>-->
+<!--                                <a href="/articles?id={{ i['id'] }}"> {{ i['title'] }} </a>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                {{ i['timef'] }}-->
+<!--                            </td>-->
+<!--                        </tr>-->
+<!--                    {% endfor %}-->
+<!--                </tbody>-->
+<!--            </table>-->
 
             {% if t_username == t_realname %}
                 <h3>Change your password</h3>
