@@ -54,13 +54,13 @@
 <html>
 <head>
     <title>{{ t_listname }} - Learn spelling - Reciter</title>
-    <script>
+    <script defer>
         let en = {{ t_en | tojson }};
         let zh = {{ t_zh | tojson }};
         let sm = {{ t_sm }};
         let sen = {{ t_sen | tojson }};
     </script>
-    <script src="../static/javascript/recite_spelling.js"></script>
+    <script src="../static/javascript/recite_spelling.js" defer></script>
     <meta charset="UTF-8">
     <link href="../static/css/white_theme.css" rel="stylesheet">
     {% if t_theme == 'black' %}
@@ -95,6 +95,7 @@
         <div id="remain"></div>
         <div id="wordcnt"></div>
         <h1 id="word"></h1>
+        <h1 id="user_ans"></h1>
         <h1 id="tip"></h1>
         <p id="sen"></p>
         <input type="text" id="input" onkeydown="if (event.key === 'Enter') checkInput();">

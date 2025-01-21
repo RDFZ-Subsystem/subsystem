@@ -164,7 +164,7 @@ def check_create():
         captcha_text, captcha_image = defender.generate_captcha()
         session['captcha'] = captcha_text.lower()
         # userdic = db.users.find_one({'username': session['username']})
-        userdic = dbConnecter.read_data('lists', 'username', session['username'])[0]
+        userdic = dbConnecter.read_data('users', 'username', session['username'])[0]
         return render_template('recite/create.html',
                            t_username=session.get('username'),
                            t_admin=userdic['admin'],

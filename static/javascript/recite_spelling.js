@@ -1,5 +1,5 @@
 let cnt = Array(en.length).fill(2), firstime = Array(en.length).fill(true);
-let idx = 0, flag = false;
+let idx = 0, flag = false, input;
 
 function deleteWord(id) {
     en.splice(id, 1);
@@ -14,19 +14,21 @@ function getRandomInt(min, max) {
 }
 
 function showWord() {
-    console.log('1000');
     idx = getRandomInt(0, en.length);
     document.getElementById('word').innerText = zh[idx];
     if (firstime[idx]) document.getElementById('first').innerText = 'first time';
     else document.getElementById('first').innerText = '';
     document.getElementById('remain').innerText = en.length;
     document.getElementById('wordcnt').innerText = cnt[idx];
+    document.getElementById('user_ans').innerText = '';
+
 }
 
 function showTip() {
     flag = true;
     document.getElementById('tip').innerText = en[idx];
     document.getElementById('wordcnt').innerText = cnt[idx];
+    document.getElementById('user_ans').innerText = input;
     if (sm) document.getElementById('sen').innerText = sen[idx];
 }
 
@@ -37,7 +39,7 @@ function checkInput() {
         showWord();
         flag = false;
     } else {
-        let input = document.getElementById('input').value;
+        input = document.getElementById('input').value;
         if (input === en[idx]) {
             cnt[idx]--;
             if (firstime[idx] || cnt[idx] === 0) {
@@ -59,5 +61,6 @@ function checkInput() {
         document.getElementById('input').value = '';
     }
 }
+
 
 window.onload = showWord;

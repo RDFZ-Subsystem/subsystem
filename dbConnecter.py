@@ -42,7 +42,7 @@ def insert_data(listname, valuename, values): # str str tuple
     cursor = connection.cursor()
     try:
         placeholder = genPlaceholder(valuename)
-        print(placeholder)
+        # print(placeholder)
         sql = 'INSERT INTO ' + listname + ' ' + valuename + ' VALUES ' + placeholder + ';'
         cursor.execute(sql, values)
         connection.commit()
@@ -66,7 +66,7 @@ def read_data(listname, con='', val=None):
         results = cursor.fetchall()
         # for row in results:
         #     print(row)
-        print(results)
+        # print(results)
         return results
     except mysql.connector.Error as err:
         print(f"Error: {err}")
