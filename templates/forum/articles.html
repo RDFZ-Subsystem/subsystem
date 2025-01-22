@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title> {{ t_dis['title'] }} - Articles - Reciter </title>
+        <title> {{ t_dis['title'] }} - Articles - Forum - Subsystem </title>
         <link href="../static/css/white_theme.css" rel="stylesheet">
         <script src="../../static/javascript/articles.js"></script>
         {% if t_theme == 'black' %}
@@ -34,10 +34,10 @@
     </head>
     <body>
         <div class="title">
-            Subsystem
+            Forum - Subsystem
             <a href="/"> Home </a>
             |
-            <a href="/lists"> Wordlists </a>
+            <a href="/reciter"> Reciter </a>
             |
             <a href="/forum"> Forum </a>
             |
@@ -131,9 +131,9 @@
             {% for i in range(0, t_size) %}
                 <br>
                 <a href="/profile?username={{t_dis['comment'][i]['username']}}">{{t_dis['comment'][i]['username']}}</a>
-                {% if t_dis['comment'][i]['to'] != None %}
+                {% if t_dis['comment'][i]['to1'] != None %}
                     reply
-                    <a href="/profile?username={{ t_dis['comment'][i]['to'] }}">{{ t_dis['comment'][i]['to'] }}</a>
+                    <a href="/profile?username={{ t_dis['comment'][i]['to1'] }}">{{ t_dis['comment'][i]['to1'] }}</a>
                 {% endif %}
 
 
@@ -151,18 +151,18 @@
                 {% endif %}
 
 
-                {% for j in t_dis['comment'][i]['content'] %}
-                    <p>{{ j }}</p>
-                {% endfor %}
+
+                <p>{{ t_dis['comment'][i]['content'] }}</p>
+
                 
             {% endfor %}
             </div>
             </div>
         </div>
         <div class="copy">
-            Developed by PeterLu. <br>
-            2024, &copy Reciter Dev Team <br>
-            All rights reserved.
-        </div>
+        Developed by <a href="https://github.com/zihanpeter">zihanpeter</a>. <br>
+        2024 - 2025, &copy <a href="https://github.com/RDFZ-Subsystem"> Subsystem Dev Team </a> <br>
+        All rights reserved.
+    </div>
     </body>
 </html>

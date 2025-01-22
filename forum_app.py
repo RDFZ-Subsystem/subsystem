@@ -5,14 +5,16 @@ import time
 import markdown
 import bleach
 import re
+
+import dbConnecter
 import defender
 import os
 
 
 forum_app = Blueprint('forum_app', __name__)
-# forum_app.secret_key = os.urandom(24)
-client = pymongo.MongoClient()
-db = client.reciter
+forum_app.secret_key = '123'
+# client = pymongo.MongoClient()
+# db = client.reciter
 
 
 '''
@@ -23,8 +25,28 @@ db = client.reciter
     title 标题
     content 内容
     timef 发布时间
-    comment 评论: username content timef to
     top 是否置顶
+    
+    comment 评论: id username content timef to
+    
+    CREATE TABLE articles (
+        id VARCHAR(128), 
+        username VARCHAR(64), 
+        title VARCHAR(128), 
+        content TEXT, 
+        timef VARCHAR(64), 
+        top BOOL
+    );
+    
+    CREATE TABLE comment (
+        id VARCHAR(128), 
+        commentid VARCHAR(128), 
+        username VARCHAR(64), 
+        content TEXT, 
+        timef VARCHAR(128), 
+        to1 VARCHAR(64)
+    );
+    
 '''
 
 
@@ -39,11 +61,20 @@ def get_theme():
 def forum():
     key = request.args.get('key')
     if key == None or key == '':
-        list_top = list(db.articles.find({'top': True}))
-        list_cmn = list(db.articles.find({'top': False}))
+        # list_top = list(db.articles.find({'top': True}))
+        # list_cmn = list(db.articles.find({'top': False}))
+        list_top = dbConnecter.read_data('articles', 'top', True)
+        list_cmn = dbConnecter.read_data('articles', 'top', False)
     else:
-        list_top = list(db.articles.find({'top': True, 'title': key}))
-        list_cmn = list(db.articles.find({'top': False, 'title': key}))
+        # list_top = list(db.articles.find({'top': True, 'title': key}))
+        # list_cmn = list(db.articles.find({'top': False, 'title': key}))
+        list_oo = dbConnecter.read_data('articles', 'title', key)
+        list_top, list_cmn = [], []
+        for i in list_oo:
+            if i['top']:
+                list_top.append(i)
+            else:
+                list_cmn.append(i)
     list_top.sort(key=lambda x: x['timef'], reverse=True)
     list_cmn.sort(key=lambda x: x['timef'], reverse=True)
     show_mode = request.args.get('show_mode')
@@ -63,7 +94,8 @@ def create_articles():
         return redirect('/login')
     captcha_text, captcha_image = defender.generate_captcha()
     session['captcha'] = captcha_text.lower()
-    userdic = db.users.find_one({'username': session['username']})
+    # userdic = db.users.find_one({'username': session['username']})
+    userdic = dbConnecter.read_data('users', 'username', session['username'])[0]
     return render_template('forum/create_articles.html',
                            t_username=session.get('username'),
                            t_admin=userdic['admin'],
@@ -111,7 +143,8 @@ def check_disucss():
     if user_captcha != session['captcha']:
         captcha_text, captcha_image = defender.generate_captcha()
         session['captcha'] = captcha_text.lower()
-        userdic = db.users.find_one({'username': session['username']})
+        # userdic = db.users.find_one({'username': session['username']})
+        userdic = dbConnecter.read_data('users', 'username', session['username'])[0]
         return render_template('forum/create_articles.html',
                                t_username=session.get('username'),
                                t_admin=userdic['admin'],
@@ -140,13 +173,16 @@ def check_disucss():
     #         s += i
     # con.append(s)
     con = attack_cleaner(con)
-    db.articles.insert_one({'id': id,
-                           'username': session.get('username'),
-                           'title': title,
-                           'content': con,
-                           'timef': now_temp,
-                           'comment': [],
-                           'top': top2})
+    dbConnecter.insert_data('articles',
+                            '(id, username, title, content, timef, top)',
+                            (id, session.get('username'), title, con, now_temp, top2))
+    # db.articles.insert_one({'id': id,
+    #                        'username': session.get('username'),
+    #                        'title': title,
+    #                        'content': con,
+    #                        'timef': now_temp,
+    #                        'comment': [],
+    #                        'top': top2})
     return redirect('/forum')
 
 
@@ -155,13 +191,16 @@ def articles():
     captcha_text, captcha_image = defender.generate_captcha()
     session['captcha'] = captcha_text.lower()
     iid = request.args.get('id')
-    dis = db.articles.find_one({'id': iid})
+    # dis = db.articles.find_one({'id': iid})
+    dis = dbConnecter.read_data('articles', 'id', iid)[0]
     sorter = request.args.get('sorter')
+    commentList = dbConnecter.read_data('comment', 'id', iid)
     if (sorter == None or sorter == 'inverted'):
         sorter = 'inverted'
-        dis['comment'].reverse()
-    sizet = len(dis['comment'])
+        commentList.reverse()
+    sizet = len(commentList)
     content = dis['content']
+    dis['comment'] = commentList
     content = markdown.markdown(content, extensions=['markdown.extensions.fenced_code',
                                                      'markdown.extensions.codehilite',
                                                      'markdown.extensions.extra',
@@ -170,7 +209,8 @@ def articles():
     if session.get('username') == None:
         admin = False
     else:
-        admin = db.users.find_one({'username': session['username']})['admin']
+        # admin = db.users.find_one({'username': session['username']})['admin']
+        admin = dbConnecter.read_data('users', 'username', session['username'])[0]['admin']
     errorr = request.args.get('error')
     if errorr == None:
         errorr = ''
@@ -205,7 +245,9 @@ def check_del_articles():
                            t_id=id,
                            t_username=session.get('username'),
                            t_theme=get_theme(),
-                           t_title=db.articles.find_one({'id': id})['title'])
+                           # t_title=db.articles.find_one({'id': id})['title']
+                           t_title=dbConnecter.read_data('articles', 'id', id)[0]['title']
+                           )
 
 
 @forum_app.route('/del_articles', methods=['GET']) # 删除讨论
@@ -213,16 +255,20 @@ def del_articles():
     if session.get('username') == None:
         return redirect('/login')
     id = request.args.get('id')
-    dic = db.articles.find_one({'id': id})
-    if dic['username'] == session.get('username') or db.users.find_one({'username': session['username']})['admin']:
-        db.articles.delete_one({'id': id})
+    # dic = db.articles.find_one({'id': id})
+    dic = dbConnecter.read_data('articles', 'id', id)[0]
+    if dic['username'] == session.get('username') or dbConnecter.read_data('users', 'username', session['username'])[0]['admin']:
+        # db.articles.delete_one({'id': id})
+        dbConnecter.delete_data('articles', 'id', id)
+        dbConnecter.delete_data('comment', 'id', id)
         return redirect('/forum')
     else:
         return 'No permission'
 
 
 def check_to(to):
-    dics = db.users.find()
+    # dics = db.users.find()
+    dics = dbConnecter.read_data('users')
     dics = list(dics)
     for i in dics:
         if i['username'] == to and to != session.get('username'):
@@ -238,8 +284,8 @@ def post_comment():
         return redirect('/articles?id=' + iid + '&error=Wrong graph validation code')
     con = request.form.get('content')
     usr = request.form.get('username')
-    dis = db.articles.find_one({'id': iid})
-    content = []
+    # dis = db.articles.find_one({'id': iid})
+    content = ''
     s = ''
     to = None
     flag = False
@@ -251,11 +297,12 @@ def post_comment():
                 to = s[1: len(s)]
                 flag = True
             else:
-                content.append(s)
+                content += s
             s = ''
         else:
             s += i
-    content.append(s)
+    content += s
+    print(content)
     if to != None and s == '':
         return redirect('/articles?id=' + iid)
     if to != None:
@@ -263,12 +310,17 @@ def post_comment():
             to = None
     now = time.localtime()
     now_temp = time.strftime("%Y-%m-%d %H:%M", now)
-    dis['comment'].append({'content': content,
-                           'timef': now_temp,
-                           'username': usr,
-                           'to': to})
-    db.articles.update({'id': iid}, dis)
-    print("-------------")
+    commentid = str(uuid.uuid1())
+    dbConnecter.insert_data('comment',
+                            '(id, commentid, username, content, timef, to1)',
+                            (iid, commentid, usr, content, now_temp, to))
+
+    # dis['comment'].append({'content': content,
+    #                        'timef': now_temp,
+    #                        'username': usr,
+    #                        'to': to})
+    # db.articles.update({'id': iid}, dis)
+    # print("-------------")
     return redirect('/articles?id=' + iid)
 
 
@@ -280,13 +332,16 @@ def del_comment():
     num = int(request.args.get('num'))
     sorter = request.args.get('sorter')
     sum = int(request.args.get('sum'))
-    dis = db.articles.find_one({'id': iid})
-    if dis['username'] == session.get('username') or db.users.find_one({'username': session['username']})['admin']:
+    # dis = db.articles.find_one({'id': iid})
+    commentList = dbConnecter.read_data('comment', 'id', iid)
+    dis = dbConnecter.read_data('articles', 'id', iid)[0]
+    if dis['username'] == session.get('username') or dbConnecter.read_data('users', 'username', session['username'])[0]['admin']:
         if sorter == 'inverted':
             num = sum - 1 - num
-        dis = db.articles.find_one({'id': iid})
-        del dis['comment'][num]
-        db.articles.update({'id': iid}, dis)
+        # dis = db.articles.find_one({'id': iid})
+        dbConnecter.delete_data('comment', 'commentid', commentList[num]['commentid'])
+        # del dis['comment'][num]
+        # db.articles.update({'id': iid}, dis)
         return redirect('/articles?id=' + iid)
     else:
         return 'No permission'
@@ -299,8 +354,10 @@ def modify_articles():
     captcha_text, captcha_image = defender.generate_captcha()
     session['captcha'] = captcha_text.lower()
     iid = request.args.get('id')
-    dic = db.articles.find_one({'id': iid})
-    admin = db.users.find_one({'username': session['username']})['admin']
+    # dic = db.articles.find_one({'id': iid})
+    dic = dbConnecter.read_data('articles', 'id', iid)
+    admin = dbConnecter.read_data('users', 'username', session['username'])[0]['admin']
+    # admin = db.users.find_one({'username': session['username']})['admin']
     if dic['username'] == session.get('username') or admin:
         title = dic['title']
         # info = ''
@@ -333,7 +390,8 @@ def modifier_articles():
     title = request.form.get('title')
     content = request.form.get('content')
     top = request.form.get('top')
-    dic = db.articles.find_one({'id': iid})
+    # dic = db.articles.find_one({'id': iid})
+    dic = dbConnecter.read_data('articles', 'id', iid)
     if top == 'False':
         top2 = False
     elif top == 'True':
@@ -354,5 +412,9 @@ def modifier_articles():
     dic['title'] = title
     dic['content'] = attack_cleaner(content)
     dic['top'] = top2
-    db.articles.update({'id': iid}, dic)
+    dbConnecter.delete_data('articles', 'id', iid)
+    dbConnecter.insert_data('articles',
+                            '(id, username, title, content, timef, top)',
+                            (iid, dic['username'], dic['title'], dic['content'], dic['timef'], dic[top]))
+    # db.articles.update({'id': iid}, dic)
     return redirect('/forum')
