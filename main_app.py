@@ -30,10 +30,10 @@ limiter = Limiter(
     default_limits=["20 per minute"]  # 应用默认速率限制（全局）
 )
 
-limiter.limit('20 per minute')(user_app)
-limiter.limit('20 per minute')(recite_app)
-limiter.limit('20 per minute')(forum_app)
-limiter.limit('20 per minute')(yule_app)
+limiter.limit('10 per minute')(user_app)
+limiter.limit('10 per minute')(recite_app)
+limiter.limit('10 per minute')(forum_app)
+limiter.limit('10 per minute')(yule_app)
 
 
 def get_theme():
@@ -44,7 +44,7 @@ def get_theme():
 
 
 @app.route('/')
-@limiter.limit('20 per minute')
+@limiter.limit('10 per minute')
 def main():
     username = session.get('username')
     # s = 0
