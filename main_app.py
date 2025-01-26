@@ -23,17 +23,7 @@ app.register_blueprint(yule_app)
 # client = pymongo.MongoClient()
 # db = client.reciter
 
-# 初始化 Limiter
-limiter = Limiter(
-    get_remote_address,  # 使用客户端 IP 地址进行速率限制
-    app=app,  # 绑定到应用
-    default_limits=["20 per minute"]  # 应用默认速率限制（全局）
-)
 
-limiter.limit('10 per minute')(user_app)
-limiter.limit('10 per minute')(recite_app)
-limiter.limit('10 per minute')(forum_app)
-limiter.limit('10 per minute')(yule_app)
 
 request_logs = {}
 MAX_REQUESTS = 20  # 每分钟最多允许的请求数
@@ -76,7 +66,6 @@ def get_theme():
 
 
 @app.route('/')
-@limiter.limit('10 per minute')
 def main():
     username = session.get('username')
     # s = 0
