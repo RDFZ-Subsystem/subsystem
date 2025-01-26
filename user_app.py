@@ -10,7 +10,7 @@ import dbConnecter
 
 
 user_app = Blueprint('user_app', __name__)
-user_app.secret_key = '123'
+user_app.secret_key = os.getenv('SECRET_KEY')
 # client = pymongo.MongoClient()
 # db = client.reciter
 

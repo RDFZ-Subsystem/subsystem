@@ -12,7 +12,7 @@ import os
 
 
 forum_app = Blueprint('forum_app', __name__)
-forum_app.secret_key = '123'
+forum_app.secret_key = os.getenv('SECRET_KEY')
 # client = pymongo.MongoClient()
 # db = client.reciter
 

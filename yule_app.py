@@ -10,7 +10,7 @@ import os
 import dbConnecter
 
 yule_app = Blueprint('yule_app', __name__)
-yule_app.secret_key = '123'
+yule_app.secret_key = os.getenv('SECRET_KEY')
 client = pymongo.MongoClient()
 db = client.reciter
 

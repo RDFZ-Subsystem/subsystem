@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, Blueprint
 import pymongo
 import time
 import os
+import markdown
 import dbConnecter
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
@@ -13,7 +14,7 @@ from yule_app import yule_app
 
 
 app = Flask(__name__)
-app.secret_key = '123'
+app.secret_key = os.getenv('SECRET_KEY')
 app.register_blueprint(user_app)
 app.register_blueprint(recite_app)
 app.register_blueprint(forum_app)
@@ -26,13 +27,13 @@ app.register_blueprint(yule_app)
 limiter = Limiter(
     get_remote_address,  # 使用客户端 IP 地址进行速率限制
     app=app,  # 绑定到应用
-    default_limits=["2 per second"]  # 应用默认速率限制（全局）
+    default_limits=["20 per minute"]  # 应用默认速率限制（全局）
 )
 
-limiter.limit('2 per second')(user_app)
-limiter.limit('2 per second')(recite_app)
-limiter.limit('2 per second')(forum_app)
-limiter.limit('2 per second')(yule_app)
+limiter.limit('20 per minute')(user_app)
+limiter.limit('20 per minute')(recite_app)
+limiter.limit('20 per minute')(forum_app)
+limiter.limit('20 per minute')(yule_app)
 
 
 def get_theme():
@@ -43,9 +44,9 @@ def get_theme():
 
 
 @app.route('/')
-@limiter.limit('2 per second')
+@limiter.limit('20 per minute')
 def main():
-    # username = session.get('username')
+    username = session.get('username')
     # s = 0
     # e = 5
     # lists = list(db.lists.find())
@@ -56,8 +57,18 @@ def main():
     # top.sort(key=lambda x: x['timef'], reverse=True)
     # lists = lists[s: e]
     # rec = rec[s: e]
+    with open('static/md/main/main.md', 'r', encoding='utf-8') as file:
+        content = file.read()
+
+    content = markdown.markdown(content, extensions=['markdown.extensions.fenced_code',
+                                                     'markdown.extensions.codehilite',
+                                                     'markdown.extensions.extra',
+                                                     'markdown.extensions.toc',
+                                                     'markdown.extensions.tables'])
     return render_template('main/main.html',
-                           )
+                           t_content=content,
+                           t_username=username,
+                           t_theme=get_theme())
 
 
 if __name__ == '__main__':

@@ -21,8 +21,8 @@ def connect_to_db():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        # password=os.getenv('MYSQL_PASSWORD'),
-        password="my_password",
+        password=os.getenv('MYSQL_PASSWORD'),
+        # password="my_password",
         database='subsystem'
     )
 

@@ -11,7 +11,7 @@ import os
 
 recite_app = Blueprint('recite_app', __name__)
 # recite_app.secret_key = os.urandom(24)
-recite_app.secret_key = '123'
+recite_app.secret_key = os.getenv('SECRET_KEY')
 # client = pymongo.MongoClient()
 # db = client.reciter
 
