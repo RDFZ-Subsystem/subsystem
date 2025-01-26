@@ -66,7 +66,7 @@ def read_data(listname, con='', val=None):
         results = cursor.fetchall()
         # for row in results:
         #     print(row)
-        print(results)
+        # print(results)
         return results
     except mysql.connector.Error as err:
         print(f"Error: {err}")
