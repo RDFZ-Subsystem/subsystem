@@ -66,7 +66,7 @@ def read_data(listname, con='', val=None):
         results = cursor.fetchall()
         # for row in results:
         #     print(row)
-        # print(results)
+        print(results)
         return results
     except mysql.connector.Error as err:
         print(f"Error: {err}")
@@ -102,6 +102,20 @@ def delete_data(listname, con, val):
         cursor.close()
         connection.close()
 
+def deltete_list(listname):
+    connection = connect_to_db()
+    cursor = connection.cursor()
+    try:
+        sql = 'DROP TABLE IF EXISTS ' + listname + ';'
+        cursor.execute(sql)
+        connection.commit()
+        print(f"Deleted {cursor.rowcount} record(s).")
+    except mysql.connector.Error as err:
+        print(f"Error: {err}")
+    finally:
+        cursor.close()
+        connection.close()
+
 # 调用函数测试
 if __name__ == "__main__":
     # insert_data('test2', '(test1, test2)', ('["1", "2", "3"]', '["1", "2", "3"]'))
@@ -114,4 +128,5 @@ if __name__ == "__main__":
     # a = ["1", "2", "3"]
     # print(str(a))
     # read_data()
-    insert_data('test3', '(h1, h2)', ('19238u8u2u4990', '2134532456453256y6432435676564'))
+    # insert_data('test3', '(h1, h2)', ('19238u8u2u4990', '2134532456453256y6432435676564'))
+    read_data('yule', 'name', 'TwentyFortyEightGame')

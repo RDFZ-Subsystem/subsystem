@@ -7,8 +7,10 @@ import bleach
 import re
 import os
 
+import dbConnecter
+
 yule_app = Blueprint('yule_app', __name__)
-# yule_app.secret_key = os.urandom(24)
+yule_app.secret_key = '123'
 client = pymongo.MongoClient()
 db = client.reciter
 
@@ -20,7 +22,16 @@ db = client.reciter
     path 游戏html文件路径
     intro 游戏介绍路径
     timef 创建时间
-    creater 创建者
+    creator 创建者
+    
+    CREATE TABLE yule (
+        name VARCHAR(128), 
+        hot INT, 
+        path VARCHAR(256), 
+        intro VARCHAR(256), 
+        timef VARCHAR(64), 
+        creator VARCHAR(128)
+    );
 '''
 
 
@@ -33,19 +44,23 @@ def get_theme():
 
 @yule_app.route('/yule')
 def yule():
-    dics = db.yule.find()
-    dics = list(dics)
+    # dics = db.yule.find()
+    # dics = list(dics)
+    dics = dbConnecter.read_data('yule')
     dics.sort(key=lambda x: x['hot'], reverse=True)
     return render_template('yule/yule.html',
                            t_dics=dics,
                            t_theme=get_theme(),
                            t_username=session.get('username'))
 
+
 @yule_app.route('/intro', methods=['GET'])
 def intro():
-    id = request.args.get('id')
-    dic = db.yule.find_one({'id': id})
+    name = request.args.get('name')
+    # dic = db.yule.find_one({'id': id})
+    dic = dbConnecter.read_data('yule', 'name', name)[0]
     intro_path = dic['intro']
+    print(intro_path)
     with open(intro_path, 'r', encoding='utf-8') as file:
         content = file.read()
 
@@ -55,7 +70,6 @@ def intro():
                                                      'markdown.extensions.toc',
                                                      'markdown.extensions.tables'])
     return render_template('yule/intro.html',
-                           t_id=id,
                            t_name=dic['name'],
                            t_intro=content,
                            t_username=session.get('username'),
@@ -68,8 +82,10 @@ def intro():
 def games():
     if session.get('username') == None:
         return redirect('/login')
-    id = request.args.get('id')
-    r = db.yule.find_one({'id': id})
+    name = request.args.get('name')
+    r = dbConnecter.read_data('yule', 'name', name)[0]
+    # r = db.yule.find_one({'id': id})
     r['hot'] += 1
-    db.yule.update({'id': id}, r)
+    # db.yule.update({'id': id}, r)
+    dbConnecter.update_data('yule', 'name', name, 'hot', r['hot'])
     return render_template(r['path'])

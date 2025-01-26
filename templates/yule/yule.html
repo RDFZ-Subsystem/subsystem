@@ -10,10 +10,10 @@
     </head>
     <body>
         <div class="title">
-            Reciter
+            Yule - Subsystem
             <a href="/"> Home </a>
             |
-            <a href="/lists"> Wordlists </a>
+            <a href="/reciter"> Reciter </a>
             |
             <a href="/forum"> Forum </a>
             |
@@ -47,7 +47,7 @@
                     {% for i in t_dics %}
                         <tr>
                             <td scope="row">
-                                <a href="/intro?id={{ i['id'] }}">{{ i['name'] }} </a>
+                                <a href="/intro?name={{ i['name'] }}">{{ i['name'] }} </a>
                             </td>
                             <td>{{ i['hot'] }}</td>
                             <td><a href="/profile?id={{ i['creator'] }}">{{ i['creator'] }} </a></td>
@@ -58,9 +58,9 @@
             </table>
         </div>
         <div class="copy">
-            Developed by PeterLu & ycy. <br>
-            2024, &copy Reciter Dev Team <br>
-            All rights reserved.
-        </div>
+        Developed by <a href="https://github.com/YCY5449">YCY5449</a>. <br>
+        2024 - 2025, &copy <a href="https://github.com/RDFZ-Subsystem"> Subsystem Dev Team </a> <br>
+        All rights reserved.
+    </div>
     </body>
 </html>

@@ -7,7 +7,7 @@
         {% if t_theme == 'black' %}
         <link href="../static/css/black_theme.css" rel="stylesheet">
         {% endif %}
-     <!-- 引入KaTeX CSS -->
+        <!-- 引入KaTeX CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css" integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
         <!-- 引入KaTeX JavaScript -->
         <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js" integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY" crossorigin="anonymous"></script>
@@ -33,10 +33,10 @@
 </head>
 <body>
   <div class="title">
-            Reciter
+            Yule - Subsystem
             <a href="/"> Home </a>
             |
-            <a href="/lists"> Wordlists </a>
+            <a href="/reciter"> Reciter </a>
             |
             <a href="/forum"> Forum </a>
             |
@@ -52,7 +52,7 @@
             |
                 <a href="/profile?username={{ t_username }}"> {{ t_username }} </a>
             {% endif %}
-  </div>
+        </div>
   <div class="contents">
 
     <h2>{{ t_name }}</h2>
@@ -67,12 +67,12 @@
     {{ t_intro|safe }}
           </div>
       <br>
-        <a href="/games?id={{ t_id }}">Start Game!</a>
+        <a href="/games?name={{ t_name }}">Start Game!</a>
   </div>
-<div class="copy">
-            Developed by PeterLu & ycy. <br>
-            2024, &copy Reciter Dev Team <br>
-            All rights reserved.
-        </div>
+ <div class="copy">
+        Developed by <a href="https://github.com/YCY5449">YCY5449</a>. <br>
+        2024 - 2025, &copy <a href="https://github.com/RDFZ-Subsystem"> Subsystem Dev Team </a> <br>
+        All rights reserved.
+    </div>
 </body>
 </html>
