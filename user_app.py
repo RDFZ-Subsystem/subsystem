@@ -37,7 +37,7 @@ user_app.secret_key = os.getenv('SECRET_KEY')
 
 
 request_logs = {}
-MAX_REQUESTS = 10  # 每分钟最多允许的请求数
+MAX_REQUESTS = 20  # 每分钟最多允许的请求数
 TIME_WINDOW = 60  # 时间窗口（秒）
 
 

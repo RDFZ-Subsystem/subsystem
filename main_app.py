@@ -36,7 +36,7 @@ limiter.limit('10 per minute')(forum_app)
 limiter.limit('10 per minute')(yule_app)
 
 request_logs = {}
-MAX_REQUESTS = 10  # 每分钟最多允许的请求数
+MAX_REQUESTS = 20  # 每分钟最多允许的请求数
 TIME_WINDOW = 60  # 时间窗口（秒）
 
 
