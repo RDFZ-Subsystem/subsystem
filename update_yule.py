@@ -51,6 +51,7 @@ if __name__ == "__main__":
     now_temp = time.strftime("%Y-%m-%d %H:%M", now)
     intro_files.sort()
     source_files.sort()
+    gamename.sort()
     for i in range(0, len(intro_files)):
         if dbConnecter.read_data('yule', 'name', gamename[i]) == []:
             if gamename[i] != '.DS_Store':
