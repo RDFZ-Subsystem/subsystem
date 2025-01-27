@@ -5,29 +5,23 @@ import dbConnecter
 client = pymongo.MongoClient()
 db = client.reciter
 
-''''
-    集合名users
-
-    username 用户名
-    password 密码
-    timef 注册时间
-    intro 个人简介
-    theme 颜色主题
-    admin 是否为管理员
-
-    CREATE TABLE users (
-        username VARCHAR(64), 
-        password VARCHAR(64), 
-        timef VARCHAR(64), 
-        intro TEXT, 
-        theme VARCHAR(64), 
-        admin BOOL
-    );
 '''
 
-list1 = list(db.users.find())
+    
+'''
+
+def toStr(l):
+    str = ''
+    for i in l:
+        str += i
+        str += '|'
+    return str
+
+
+list1 = list(db.lists.find())
+list2 = list(db.articles.find())
 for i in list1:
-    dbConnecter.insert_data('users',
-                            '(username, password, timef, intro, theme, admin)',
-                            (i['username'], i['password'], i['timef'], i['intro'], i['theme'], i['admin'])
+    dbConnecter.insert_data('lists',
+                            '(id, username, listname, difficulty, en, zh, timef, o, sm, sen)',
+                            (i['id'], i['username'], i['listname'], i['difficulty'], toStr(i['en']), toStr(i['zh']), i['timef'], i['o'], i['sm'], toStr(i['sen']))
                             )
