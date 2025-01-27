@@ -423,7 +423,7 @@ def modifier_articles():
     content = request.form.get('content')
     top = request.form.get('top')
     # dic = db.articles.find_one({'id': iid})
-    dic = dbConnecter.read_data('articles', 'id', iid)
+    dic = dbConnecter.read_data('articles', 'id', iid)[0]
     if top == 'False':
         top2 = False
     elif top == 'True':
