@@ -387,7 +387,7 @@ def modify_articles():
     session['captcha'] = captcha_text.lower()
     iid = request.args.get('id')
     # dic = db.articles.find_one({'id': iid})
-    dic = dbConnecter.read_data('articles', 'id', iid)
+    dic = dbConnecter.read_data('articles', 'id', iid)[0]
     admin = dbConnecter.read_data('users', 'username', session['username'])[0]['admin']
     # admin = db.users.find_one({'username': session['username']})['admin']
     if dic['username'] == session.get('username') or admin:
