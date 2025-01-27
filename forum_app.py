@@ -447,6 +447,6 @@ def modifier_articles():
     dbConnecter.delete_data('articles', 'id', iid)
     dbConnecter.insert_data('articles',
                             '(id, username, title, content, timef, top)',
-                            (iid, dic['username'], dic['title'], dic['content'], dic['timef'], dic[top]))
+                            (iid, dic['username'], dic['title'], dic['content'], dic['timef'], dic['top']))
     # db.articles.update({'id': iid}, dic)
     return redirect('/forum')
