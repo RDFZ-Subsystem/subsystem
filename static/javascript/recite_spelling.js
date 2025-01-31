@@ -18,14 +18,12 @@ function showWord() {
     document.getElementById('word').innerText = zh[idx];
     if (firstime[idx]) document.getElementById('first').innerText = 'first time';
     else document.getElementById('first').innerText = '';
-    document.getElementById('input').value = '';
     document.getElementById('remain').innerText = en.length;
     document.getElementById('wordcnt').innerText = cnt[idx];
     document.getElementById('user_ans').innerText = '';
 }
 
 function showTip() {
-    document.getElementById('input').value = '';
     flag = true;
     document.getElementById('tip').innerText = en[idx];
     document.getElementById('wordcnt').innerText = cnt[idx];
@@ -34,13 +32,13 @@ function showTip() {
 }
 
 function checkInput() {
+    input = document.getElementById('input').value;
     if (flag) {
         document.getElementById('tip').innerText = '';
         document.getElementById('sen').innerText = '';
         showWord();
         flag = false;
     } else {
-        input = document.getElementById('input').value;
         if (input === en[idx]) {
             cnt[idx]--;
             if (firstime[idx] || cnt[idx] === 0) {
