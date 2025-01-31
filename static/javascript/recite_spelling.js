@@ -14,7 +14,7 @@ function getRandomInt(min, max) {
 }
 
 function showWord() {
-    document.getElementById('input').value = '';
+
     idx = getRandomInt(0, en.length);
     document.getElementById('word').innerText = zh[idx];
     if (firstime[idx]) document.getElementById('first').innerText = 'first time';
@@ -25,7 +25,7 @@ function showWord() {
 }
 
 function showTip() {
-    document.getElementById('input').value = '';
+
     flag = true;
     document.getElementById('tip').innerText = en[idx];
     document.getElementById('wordcnt').innerText = cnt[idx];
@@ -38,6 +38,7 @@ function checkInput() {
     if (flag) {
         document.getElementById('tip').innerText = '';
         document.getElementById('sen').innerText = '';
+        document.getElementById('input').value = '';
         showWord();
         flag = false;
     } else {
@@ -51,11 +52,13 @@ function checkInput() {
                 document.getElementById('submit').disabled = true;
                 document.getElementById('finish').innerText = 'Finished';
             } else {
+                document.getElementById('input').value = '';
                 showWord();
             }
         } else {
             firstime[idx] = false;
             cnt[idx] = 2;
+            document.getElementById('input').value = '';
             showTip();
         }
     }
