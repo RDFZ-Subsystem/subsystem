@@ -99,7 +99,7 @@ def check_login():
     password = request.form['password']
     # res = db.users.find_one({'username': username, 'password': password})
     res = dbConnecter.read_data('users', 'username', username)
-    if res == [] or res[0]['password'] != password:
+    if res == [] or res[0]['password'] != password or res[0]['username'] != username:
         captcha_text, captcha_image = defender.generate_captcha()
         session['captcha'] = captcha_text.lower()
         return render_template('user/login.html',
