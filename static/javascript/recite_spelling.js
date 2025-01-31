@@ -14,6 +14,7 @@ function getRandomInt(min, max) {
 }
 
 function showWord() {
+    document.getElementById('input').value = '';
     idx = getRandomInt(0, en.length);
     document.getElementById('word').innerText = zh[idx];
     if (firstime[idx]) document.getElementById('first').innerText = 'first time';
@@ -24,6 +25,7 @@ function showWord() {
 }
 
 function showTip() {
+    document.getElementById('input').value = '';
     flag = true;
     document.getElementById('tip').innerText = en[idx];
     document.getElementById('wordcnt').innerText = cnt[idx];
