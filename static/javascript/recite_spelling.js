@@ -39,7 +39,6 @@ function checkInput() {
         document.getElementById('tip').innerText = '';
         document.getElementById('sen').innerText = '';
         document.getElementById('input').value = '';
-        console.log('yeah');
         showWord();
         flag = false;
     } else {
@@ -54,7 +53,6 @@ function checkInput() {
                 document.getElementById('finish').innerText = 'Finished';
             } else {
                 document.getElementById('input').value = '';
-                console.log('yeah');
                 showWord();
             }
         } else {
