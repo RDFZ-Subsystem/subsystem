@@ -21,7 +21,7 @@ function showWord() {
     document.getElementById('remain').innerText = en.length;
     document.getElementById('wordcnt').innerText = cnt[idx];
     document.getElementById('user_ans').innerText = '';
-    document.getElementById('input').innerText = '';
+    document.getElementById('input').value = '';
 }
 
 function showTip() {
