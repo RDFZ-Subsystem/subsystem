@@ -21,7 +21,6 @@ function showWord() {
     document.getElementById('remain').innerText = en.length;
     document.getElementById('wordcnt').innerText = cnt[idx];
     document.getElementById('user_ans').innerText = '';
-    document.getElementById('input').value = '';
 }
 
 function showTip() {
@@ -52,14 +51,13 @@ function checkInput() {
             } else {
                 showWord();
             }
-
         } else {
             firstime[idx] = false;
             cnt[idx] = 2;
             showTip();
         }
-        document.getElementById('input').value = '';
     }
+    document.getElementById('input').value = '';
 }
 
 
