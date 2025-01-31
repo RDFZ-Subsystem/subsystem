@@ -18,12 +18,14 @@ function showWord() {
     document.getElementById('word').innerText = zh[idx];
     if (firstime[idx]) document.getElementById('first').innerText = 'first time';
     else document.getElementById('first').innerText = '';
+    document.getElementById('input').value = '';
     document.getElementById('remain').innerText = en.length;
     document.getElementById('wordcnt').innerText = cnt[idx];
     document.getElementById('user_ans').innerText = '';
 }
 
 function showTip() {
+    document.getElementById('input').value = '';
     flag = true;
     document.getElementById('tip').innerText = en[idx];
     document.getElementById('wordcnt').innerText = cnt[idx];
@@ -57,7 +59,6 @@ function checkInput() {
             showTip();
         }
     }
-    document.getElementById('input').value = '';
 }
 
 
