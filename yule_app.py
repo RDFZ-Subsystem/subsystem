@@ -121,4 +121,15 @@ def games():
     r['hot'] += 1
     # db.yule.update({'id': id}, r)
     dbConnecter.update_data('yule', 'name', name, 'hot', r['hot'])
-    return render_template(r['path'])
+    return render_template(r['path'],
+                           t_home='/yule',
+                           t_username=session.get('username'))
+
+@yule_app.route('/yulewordlist')
+def get_wordlist():
+    with open('static/source/wordlist.txt', 'r', encoding='utf-8') as file:
+        return file.read()
+@yule_app.route('/yulecsw22')
+def get_csw22():
+    with open('static/source/CSW22.txt', 'r', encoding='utf-8') as file:
+        return file.read()
