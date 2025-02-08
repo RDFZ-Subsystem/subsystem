@@ -1,13 +1,9 @@
-from flask import Flask, render_template, request, session, redirect, Blueprint, jsonify
+from flask import render_template, request, session, redirect, Blueprint
 import pymongo
-import uuid
-import time
 import markdown
-import bleach
-import re
 import os
 
-import dbConnecter
+from lib import dbConnecter
 
 yule_app = Blueprint('yule_app', __name__)
 yule_app.secret_key = os.getenv('SECRET_KEY')

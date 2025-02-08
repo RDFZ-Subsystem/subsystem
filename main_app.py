@@ -1,11 +1,6 @@
-from flask import Flask, render_template, request, session, redirect, Blueprint, jsonify
-import pymongo
-import time
+from flask import Flask, render_template, session
 import os
 import markdown
-import dbConnecter
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
 
 from user_app import user_app
 from recite_app import recite_app

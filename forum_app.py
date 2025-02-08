@@ -1,13 +1,11 @@
-from flask import Flask, render_template, request, session, redirect, Blueprint, jsonify
-import pymongo
+from flask import render_template, request, session, redirect, Blueprint
 import uuid
 import time
 import markdown
 import bleach
 import re
 
-import dbConnecter
-import defender
+from lib import dbConnecter, defender
 import os
 
 

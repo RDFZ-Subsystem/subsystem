@@ -1,5 +1,5 @@
 import os
-import dbConnecter
+from lib import dbConnecter
 import time
 
 '''
@@ -42,8 +42,8 @@ def get_game_name(directory_path):
 
 
 if __name__ == "__main__":
-    folder_path_intro = 'static/md/yule'
-    folder_path_source = 'templates/yule/source'
+    folder_path_intro = '../static/md/yule'
+    folder_path_source = '../templates/yule/source'
     intro_files = get_all_files_in_directory(folder_path_intro)
     source_files = get_all_files_in_directory(folder_path_source)
     gamename = get_game_name(folder_path_source)
@@ -57,5 +57,5 @@ if __name__ == "__main__":
             if gamename[i] != '.DS_Store':
                 dbConnecter.insert_data('yule',
                                     '(name, hot, path, intro, timef, creator)',
-                                    (gamename[i][:-5], 0, source_files[i][10:], intro_files[i], now_temp, 'ycy'))
+                                        (gamename[i][:-5], 0, source_files[i][10:], intro_files[i], now_temp, 'ycy'))
 

@@ -1,13 +1,10 @@
-from flask import Flask, render_template, request, session, redirect, Blueprint, jsonify
-import pymongo
+from flask import render_template, request, session, redirect, Blueprint
 import time
 import markdown
 import bleach
 import re
-import defender
 import os
-import dbConnecter
-
+from lib import dbConnecter, defender
 
 user_app = Blueprint('user_app', __name__)
 user_app.secret_key = os.getenv('SECRET_KEY')
