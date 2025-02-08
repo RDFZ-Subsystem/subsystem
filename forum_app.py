@@ -50,38 +50,6 @@ forum_app.secret_key = os.getenv('SECRET_KEY')
 '''
 
 
-request_logs = {}
-MAX_REQUESTS = 20  # 每分钟最多允许的请求数
-TIME_WINDOW = 60  # 时间窗口（秒）
-
-
-def log_request(fingerprint):
-    """记录访问行为"""
-    current_time = time.time()
-    if fingerprint not in request_logs:
-        request_logs[fingerprint] = []
-    request_logs[fingerprint].append(current_time)
-
-    # 保留时间窗口内的请求记录
-    request_logs[fingerprint] = [t for t in request_logs[fingerprint] if current_time - t <= TIME_WINDOW]
-
-    # 判断是否超过阈值
-    if len(request_logs[fingerprint]) > MAX_REQUESTS:
-        return True  # 超过限制，标记为可疑
-    return False
-
-
-@forum_app.before_request
-def detect_bot():
-    # 根据 User-Agent + IP 生成设备指纹
-    user_agent = request.headers.get("User-Agent", "")
-    ip = request.remote_addr
-    fingerprint = f"{ip}_{user_agent}"  # 简单生成指纹，实际可以用更复杂的方法
-
-    # 检查行为是否异常
-    if log_request(fingerprint):
-        return jsonify({"error": "Too many requests, potential bot detected."}), 429
-
 def get_theme():
     theme = session.get('theme')
     if theme == None:
