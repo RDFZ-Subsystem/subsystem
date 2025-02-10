@@ -2,7 +2,7 @@ from flask import render_template, request, session, redirect, Blueprint, abort
 import uuid
 import time
 
-from lib import dbConnecter, defender, checkOrigin
+from lib import dbConnecter, defender
 import os
 
 from user_app import user_app
@@ -41,19 +41,6 @@ recite_app.secret_key = os.getenv('SECRET_KEY')
     );
 '''
 
-CLOUDFLARE_IPS = {
-    "173.245.48.0/20", "103.21.244.0/22", "103.22.200.0/22",
-    "103.31.4.0/22", "141.101.64.0/18", "108.162.192.0/18",
-    "190.93.240.0/20", "188.114.96.0/20", "197.234.240.0/22",
-    "198.41.128.0/17", "162.158.0.0/15", "104.16.0.0/13",
-    "104.24.0.0/14", "172.64.0.0/13", "131.0.72.0/22"
-}
-
-@recite_app.before_request
-def block_non_cloudflare():
-    real_ip = request.headers.get('', request.remote_addr)
-    if checkOrigin.is_cloudflare_ip(real_ip):
-        abort(403)
 
 def get_theme():
     theme = session.get('theme')

@@ -3,7 +3,7 @@ import pymongo
 import markdown
 import os
 
-from lib import dbConnecter, checkOrigin
+from lib import dbConnecter
 
 yule_app = Blueprint('yule_app', __name__)
 yule_app.secret_key = os.getenv('SECRET_KEY')
@@ -30,12 +30,6 @@ db = client.reciter
     );
 '''
 
-
-@yule_app.before_request
-def block_non_cloudflare():
-    real_ip = request.headers.get('', request.remote_addr)
-    if checkOrigin.is_cloudflare_ip(real_ip):
-        abort(403)
 
 def get_theme():
     theme = session.get('theme')

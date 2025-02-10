@@ -7,8 +7,6 @@ from recite_app import recite_app
 from forum_app import forum_app
 from yule_app import yule_app
 
-from lib import checkOrigin
-
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
@@ -20,11 +18,6 @@ app.register_blueprint(yule_app)
 # client = pymongo.MongoClient()
 # db = client.reciter
 
-@app.before_request
-def block_non_cloudflare():
-    real_ip = request.headers.get('', request.remote_addr)
-    if checkOrigin.is_cloudflare_ip(real_ip):
-        abort(403)
 
 def get_theme():
     theme = session.get('theme')

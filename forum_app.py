@@ -5,7 +5,7 @@ import markdown
 import bleach
 import re
 
-from lib import dbConnecter, defender, checkOrigin
+from lib import dbConnecter, defender
 import os
 
 
@@ -47,13 +47,6 @@ forum_app.secret_key = os.getenv('SECRET_KEY')
     
 '''
 
-
-
-@forum_app.before_request
-def block_non_cloudflare():
-    real_ip = request.headers.get('', request.remote_addr)
-    if checkOrigin.is_cloudflare_ip(real_ip):
-        abort(403)
 
 def get_theme():
     theme = session.get('theme')
