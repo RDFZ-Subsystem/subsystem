@@ -4,7 +4,7 @@ import markdown
 import bleach
 import re
 import os
-from lib import dbConnecter, defender
+from lib import dbConnecter, defender, checkOrigin
 
 user_app = Blueprint('user_app', __name__)
 user_app.secret_key = os.getenv('SECRET_KEY')
@@ -42,8 +42,8 @@ CLOUDFLARE_IPS = {
 
 @user_app.before_request
 def block_non_cloudflare():
-    user_ip = request.headers.get("CF-Connecting-IP", request.remote_addr)
-    if not any(user_ip.startswith(ip.split('/')[0]) for ip in CLOUDFLARE_IPS):
+    real_ip = request.headers.get('', request.remote_addr)
+    if checkOrigin.is_cloudflare_ip(real_ip):
         abort(403)
 
 def get_theme():

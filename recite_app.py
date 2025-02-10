@@ -2,7 +2,7 @@ from flask import render_template, request, session, redirect, Blueprint, abort
 import uuid
 import time
 
-from lib import dbConnecter, defender
+from lib import dbConnecter, defender, checkOrigin
 import os
 
 from user_app import user_app
@@ -51,8 +51,8 @@ CLOUDFLARE_IPS = {
 
 @recite_app.before_request
 def block_non_cloudflare():
-    user_ip = request.headers.get("CF-Connecting-IP", request.remote_addr)
-    if not any(user_ip.startswith(ip.split('/')[0]) for ip in CLOUDFLARE_IPS):
+    real_ip = request.headers.get('', request.remote_addr)
+    if checkOrigin.is_cloudflare_ip(real_ip):
         abort(403)
 
 def get_theme():
