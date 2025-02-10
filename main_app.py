@@ -23,6 +23,7 @@ from lib import check_cf
 @app.before_request
 def before():
     ip = request.remote_addr
+    print(ip)
     if check_cf.check(ip):
         abort(403)
 
