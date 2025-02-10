@@ -5,7 +5,7 @@ import markdown
 import bleach
 import re
 
-from lib import dbConnecter, defender, checkip
+from lib import dbConnecter, defender
 import os
 
 
@@ -47,11 +47,7 @@ forum_app.secret_key = os.getenv('SECRET_KEY')
     
 '''
 
-@forum_app.before_request
-def check():
-    ip = request.remote_addr
-    if not checkip.check(ip):
-        abort(403)
+
 
 def get_theme():
     theme = session.get('theme')

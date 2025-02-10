@@ -7,7 +7,6 @@ from recite_app import recite_app
 from forum_app import forum_app
 from yule_app import yule_app
 
-from lib import checkip
 
 
 app = Flask(__name__)
@@ -20,11 +19,7 @@ app.register_blueprint(yule_app)
 # client = pymongo.MongoClient()
 # db = client.reciter
 
-@app.before_request
-def check():
-    ip = request.remote_addr
-    if not checkip.check(ip):
-        abort(403)
+
 
 def get_theme():
     theme = session.get('theme')

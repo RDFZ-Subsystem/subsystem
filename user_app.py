@@ -4,7 +4,7 @@ import markdown
 import bleach
 import re
 import os
-from lib import dbConnecter, defender, checkip
+from lib import dbConnecter, defender
 
 user_app = Blueprint('user_app', __name__)
 user_app.secret_key = os.getenv('SECRET_KEY')
@@ -32,11 +32,7 @@ user_app.secret_key = os.getenv('SECRET_KEY')
     );
 '''
 
-@user_app.before_request
-def check():
-    ip = request.remote_addr
-    if not checkip.check(ip):
-        abort(403)
+
 
 def get_theme():
     theme = session.get('theme')

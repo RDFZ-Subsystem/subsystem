@@ -2,7 +2,7 @@ from flask import render_template, request, session, redirect, Blueprint, abort
 import uuid
 import time
 
-from lib import dbConnecter, defender, checkip
+from lib import dbConnecter, defender
 import os
 
 from user_app import user_app
@@ -41,11 +41,7 @@ recite_app.secret_key = os.getenv('SECRET_KEY')
     );
 '''
 
-@recite_app.before_request
-def check():
-    ip = request.remote_addr
-    if not checkip.check(ip):
-        abort(403)
+
 
 
 def get_theme():

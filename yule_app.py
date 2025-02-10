@@ -3,7 +3,7 @@ import pymongo
 import markdown
 import os
 
-from lib import dbConnecter, checkip
+from lib import dbConnecter
 
 yule_app = Blueprint('yule_app', __name__)
 yule_app.secret_key = os.getenv('SECRET_KEY')
@@ -30,12 +30,6 @@ db = client.reciter
     );
 '''
 
-
-@yule_app.before_request
-def check():
-    ip = request.remote_addr
-    if not checkip.check(ip):
-        abort(403)
 
 def get_theme():
     theme = session.get('theme')
