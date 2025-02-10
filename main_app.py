@@ -23,7 +23,7 @@ app.register_blueprint(yule_app)
 @app.before_request
 def check():
     ip = request.remote_addr
-    if not check(ip):
+    if not checkip.check(ip):
         abort(403)
 
 def get_theme():

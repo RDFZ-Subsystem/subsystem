@@ -44,7 +44,7 @@ recite_app.secret_key = os.getenv('SECRET_KEY')
 @recite_app.before_request
 def check():
     ip = request.remote_addr
-    if not check(ip):
+    if not checkip.check(ip):
         abort(403)
 
 
