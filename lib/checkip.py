@@ -2,5 +2,5 @@ cfips = ['173.245.48.0', '103.21.244.0', '103.22.200.0', '103.31.4.0', '141.101.
 
 def check(ip):
     if ip in cfips:
-        return True
-    return False
+        return False
+    return True
