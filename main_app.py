@@ -19,7 +19,12 @@ app.register_blueprint(yule_app)
 # client = pymongo.MongoClient()
 # db = client.reciter
 
-
+from lib import check_cf
+@app.before_request
+def before():
+    ip = request.remote_addr
+    if check_cf.check(ip):
+        abort(403)
 
 def get_theme():
     theme = session.get('theme')
@@ -30,8 +35,6 @@ def get_theme():
 
 @app.route('/')
 def main():
-    print(request.remote_addr)
-    print(type(request.remote_addr))
     username = session.get('username')
     # s = 0
     # e = 5

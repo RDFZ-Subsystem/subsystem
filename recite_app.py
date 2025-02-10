@@ -41,7 +41,12 @@ recite_app.secret_key = os.getenv('SECRET_KEY')
     );
 '''
 
-
+from lib import check_cf
+@recite_app.before_request
+def before():
+    ip = request.remote_addr
+    if check_cf.check(ip):
+        abort(403)
 
 
 def get_theme():
