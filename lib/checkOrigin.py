@@ -11,5 +11,5 @@ CLOUDFLARE_IPS = {
 
 def is_cloudflare_ip(ip):
     ip_addr = ipaddress.ip_address(ip)
-    return any(ip_addr in cf_range for cf_range in CLOUDFLARE_IPS)
+    return any(ip in cf_range for cf_range in CLOUDFLARE_IPS)
 
