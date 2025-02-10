@@ -30,12 +30,6 @@ db = client.reciter
     );
 '''
 
-from lib import check_cf
-@yule_app.before_request
-def before():
-    ip = request.remote_addr
-    if check_cf.check(ip):
-        abort(403)
 
 
 def get_theme():
