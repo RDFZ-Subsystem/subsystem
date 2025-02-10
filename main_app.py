@@ -30,6 +30,8 @@ def get_theme():
 
 @app.route('/')
 def main():
+    print(request.remote_addr)
+    print(type(request.remote_addr))
     username = session.get('username')
     # s = 0
     # e = 5
