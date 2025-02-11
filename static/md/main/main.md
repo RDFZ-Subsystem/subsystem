@@ -126,3 +126,15 @@ Operate | button
 Continue|Down arrow / S
 Don't know|Right arrow / D
 Know|Left arrow / A
+
+## Yule
+A project before Christmas.
+### Background
+Yule is established to create a wonderful online JavaScript gaming platform.
+
+Now, all the games on Yule are provided by [ycy](https://subsystem.top/profile?username=ycy), a passionate developer. He is also the main programmer of the FRC team 5449 & FTC 12527. You can go to his Github personal page by the link of the copyright statement under any Yule page of Subsystem.
+
+### Contents
+After you enter the Yule page, you can see a list of all the games, as well as the `Hot` value. `Hot` value presents how many times the game has been played.
+
+What's more, you can click any game to enter the game introduction page, and you can see the detailed introduction of the game.
