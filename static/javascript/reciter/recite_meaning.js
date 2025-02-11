@@ -61,19 +61,17 @@ function checkDonotknow() {
     showWord();
 }
 
-document.onkeydown = function(event) {
-    if (event.keyCode == 40 || event.keyCode == 83) {
+document.addEventListener("keydown", function(event) {
+
+    if (event.key === "S" || event.key === "ArrowDown") {
         showTip();
     }
-};
-
-document.onkeydown = function(event) {
-    if ((event.keyCode == 37 || event.keyCode == 65) && flag) {
+    if (event.key === "A" || event.key === "ArrowLeft") {
         checkKnow();
     }
-    if ((event.keyCode == 39 || event.keyCode == 68) && flag) {
+    if (event.key == "D" || event.key === "ArrowRight") {
         checkDonotknow();
     }
-};
+});
 
 window.onload = showWord;
