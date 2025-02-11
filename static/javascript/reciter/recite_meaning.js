@@ -24,9 +24,9 @@ function showWord() {
     document.getElementById('remain').innerText = en.length;
     document.getElementById('wordcnt').innerText = cnt[idx];
     document.getElementById('guide').innerText = 'Please recall the meaning of the word.';
-    document.getElementById('know').style.disabled = true;
-    document.getElementById('donotknow').style.display = true;
-    document.getElementById('next').style.disabled = false;
+    document.getElementById('know').disabled = true;
+    document.getElementById('donotknow').disabled = true;
+    document.getElementById('next').disabled = false;
 }
 
 function showTip() {
@@ -34,9 +34,9 @@ function showTip() {
     document.getElementById('tip').innerText = zh[idx];
     if (sm) document.getElementById('sen').innerText = sen[idx];
     document.getElementById('guide').innerText = '';
-    document.getElementById('know').style.disabled = false;
-    document.getElementById('donotknow').style.disabled = false;
-    document.getElementById('next').style.disabled = true;
+    document.getElementById('know').disabled = false;
+    document.getElementById('donotknow').disabled = false;
+    document.getElementById('next').disabled = true;
 }
 
 
@@ -62,15 +62,14 @@ function checkDonotknow() {
 }
 
 document.addEventListener("keydown", function(event) {
-
     if (event.key === "S" || event.key === "ArrowDown") {
-        showTip();
+        if (!flag) showTip();
     }
     if (event.key === "A" || event.key === "ArrowLeft") {
-        checkKnow();
+        if (flag) checkKnow();
     }
     if (event.key == "D" || event.key === "ArrowRight") {
-        checkDonotknow();
+        if (flag) checkDonotknow();
     }
 });
 
