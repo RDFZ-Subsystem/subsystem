@@ -26,7 +26,7 @@ function showWord() {
     document.getElementById('guide').innerText = 'Please recall the meaning of the word.';
     document.getElementById('know').style.display = 'none';
     document.getElementById('donotknow').style.display = 'none';
-    document.getElementById('next').style.display = 'block';
+    document.getElementById('next').style.text-align = 'center';
 }
 
 function showTip() {
@@ -34,8 +34,8 @@ function showTip() {
     document.getElementById('tip').innerText = zh[idx];
     if (sm) document.getElementById('sen').innerText = sen[idx];
     document.getElementById('guide').innerText = '';
-    document.getElementById('know').style.display = 'block';
-    document.getElementById('donotknow').style.display = 'block';
+    document.getElementById('know').style.text-align = 'center';
+    document.getElementById('donotknow').style.text-align = 'center';
     document.getElementById('next').style.display = 'none';
 }
 
