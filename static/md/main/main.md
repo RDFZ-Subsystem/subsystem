@@ -37,7 +37,7 @@ Administrator rights:
 - Modify some users' non-standard personal profiles
 
 -----
-# Intro
+# Systems Intro
 
 ## Forum
 You can delete or modify the articles you have created. At the same time, you can also delete your post under discussion
