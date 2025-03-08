@@ -10,7 +10,7 @@ Reciter is using JavaScript to run, which is faster and safer.
 
 --------
 # Basic info & rules
-Welcome to [Subsystem.top](https://subsystem.top)!
+Welcome to [subsystem.top](https://subsystem.top)!
 ## About the account
 To access your account, click on the rightmost item in the menu bar at the top of the page
 
