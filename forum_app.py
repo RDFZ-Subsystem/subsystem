@@ -14,7 +14,6 @@ forum_app.secret_key = os.getenv('SECRET_KEY')
 # client = pymongo.MongoClient()
 # db = client.reciter
 
-
 '''
     集合名articles
 
@@ -24,7 +23,6 @@ forum_app.secret_key = os.getenv('SECRET_KEY')
     content 内容
     timef 发布时间
     top 是否置顶
-    
     comment 评论: id username content timef to
     
     CREATE TABLE articles (
@@ -43,17 +41,14 @@ forum_app.secret_key = os.getenv('SECRET_KEY')
         content TEXT, 
         timef VARCHAR(128), 
         to1 VARCHAR(64)
-    );
-    
+    );    
 '''
-
 
 def get_theme():
     theme = session.get('theme')
     if theme == None:
         theme = 'white'
     return theme
-
 
 @forum_app.route('/forum', methods=['GET']) # 展示讨论列表
 def forum():
@@ -85,7 +80,6 @@ def forum():
                            t_theme=get_theme(),
                            t_show_mode=show_mode)
 
-
 @forum_app.route('/create_articles', methods=['GET']) # 展示创建页面
 def create_articles():
     if session.get('username') == None:
@@ -99,7 +93,6 @@ def create_articles():
                            t_admin=userdic['admin'],
                            t_theme=get_theme(),
                            t_captcha_image=captcha_image)
-
 
 # 定义一个函数，用于提取Markdown中的代码块
 def extract_code_blocks(text):
@@ -115,13 +108,11 @@ def extract_code_blocks(text):
         counter += 1
     return text, code_blocks
 
-
 # 定义一个函数，用于恢复代码块
 def restore_code_blocks(text, code_blocks):
     for placeholder, code in code_blocks.items():
         text = text.replace(placeholder, code)
     return text
-
 
 def attack_cleaner(con):
     # 提取代码块
@@ -131,7 +122,6 @@ def attack_cleaner(con):
     # 恢复代码块
     con = restore_code_blocks(cleaned_markdown, code_blocks)
     return con
-
 
 @forum_app.route('/check_articles', methods=['POST']) # 处理创建信息
 def check_disucss():
@@ -183,7 +173,6 @@ def check_disucss():
     #                        'top': top2})
     return redirect('/forum')
 
-
 @forum_app.route('/articles', methods=['GET']) # 展示articles
 def articles():
     captcha_text, captcha_image = defender.generate_captcha()
@@ -223,7 +212,6 @@ def articles():
                            t_error=errorr,
                            t_captcha_image=captcha_image)
 
-
 # @forum_app.route('/mod_top', methods=['POST']) # 更改置顶
 # def mod_top():
 #     id = request.form.get('id')
@@ -232,7 +220,6 @@ def articles():
 #     dis_lib['top'] = top == 'true'
 #     db.articles.update({'id': id}, dis_lib)
 #     return redirect('/forum')
-
 
 @forum_app.route('/check_del_articles', methods=['GET']) # 确认删除
 def check_del_articles():
@@ -246,7 +233,6 @@ def check_del_articles():
                            # t_title=db.articles.find_one({'id': id})['title']
                            t_title=dbConnecter.read_data('articles', 'id', id)[0]['title']
                            )
-
 
 @forum_app.route('/del_articles', methods=['GET']) # 删除讨论
 def del_articles():
@@ -263,7 +249,6 @@ def del_articles():
     else:
         return 'No permission'
 
-
 def check_to(to):
     # dics = db.users.find()
     dics = dbConnecter.read_data('users')
@@ -272,7 +257,6 @@ def check_to(to):
         if i['username'] == to and to != session.get('username'):
             return False
     return True
-
 
 @forum_app.route('/post_comment', methods=['POST']) # 发布评论
 def post_comment():
@@ -312,7 +296,6 @@ def post_comment():
     dbConnecter.insert_data('comment',
                             '(id, commentid, username, content, timef, to1)',
                             (iid, commentid, usr, content, now_temp, to))
-
     # dis['comment'].append({'content': content,
     #                        'timef': now_temp,
     #                        'username': usr,
@@ -320,7 +303,6 @@ def post_comment():
     # db.articles.update({'id': iid}, dis)
     # print("-------------")
     return redirect('/articles?id=' + iid)
-
 
 @forum_app.route('/del_comment', methods=['GET']) # 删除评论
 def del_comment():
@@ -343,7 +325,6 @@ def del_comment():
         return redirect('/articles?id=' + iid)
     else:
         return 'No permission'
-
 
 @forum_app.route('/modify_articles', methods=['GET']) # provide the modifier page
 def modify_articles():
@@ -375,7 +356,6 @@ def modify_articles():
                                t_error=errorr)
     else:
         return 'No permission'
-
 
 @forum_app.route('/modifier_articles', methods=['POST']) # check the modified information
 def modifier_articles():

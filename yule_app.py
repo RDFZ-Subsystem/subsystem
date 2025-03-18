@@ -7,8 +7,8 @@ from lib import dbConnecter
 
 yule_app = Blueprint('yule_app', __name__)
 yule_app.secret_key = os.getenv('SECRET_KEY')
-client = pymongo.MongoClient()
-db = client.reciter
+# client = pymongo.MongoClient()
+# db = client.reciter
 
 '''
     集合名 yule
@@ -30,14 +30,11 @@ db = client.reciter
     );
 '''
 
-
-
 def get_theme():
     theme = session.get('theme')
     if theme == None:
         theme = 'white'
     return theme
-
 
 @yule_app.route('/yule')
 def yule():
@@ -50,7 +47,6 @@ def yule():
                            t_theme=get_theme(),
                            t_username=session.get('username'))
 
-
 @yule_app.route('/intro', methods=['GET'])
 def intro():
     name = request.args.get('name')
@@ -60,7 +56,6 @@ def intro():
     print(intro_path)
     with open(intro_path, 'r', encoding='utf-8') as file:
         content = file.read()
-
     content = markdown.markdown(content, extensions=['markdown.extensions.fenced_code',
                                                      'markdown.extensions.codehilite',
                                                      'markdown.extensions.extra',
@@ -93,6 +88,7 @@ def games():
 def get_wordlist():
     with open('static/source/wordlist.txt', 'r', encoding='utf-8') as file:
         return file.read()
+
 @yule_app.route('/yulecsw22')
 def get_csw22():
     with open('static/source/CSW22.txt', 'r', encoding='utf-8') as file:

@@ -8,24 +8,20 @@ from forum_app import forum_app
 from yule_app import yule_app
 
 
-
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY')
 app.register_blueprint(user_app)
 app.register_blueprint(recite_app)
 app.register_blueprint(forum_app)
 app.register_blueprint(yule_app)
-
 # client = pymongo.MongoClient()
 # db = client.reciter
-
 
 def get_theme():
     theme = session.get('theme')
     if theme == None:
         theme = 'white'
     return theme
-
 
 @app.route('/')
 def main():
@@ -42,7 +38,6 @@ def main():
     # rec = rec[s: e]
     with open('static/md/main/main.md', 'r', encoding='utf-8') as file:
         content = file.read()
-
     content = markdown.markdown(content, extensions=['markdown.extensions.fenced_code',
                                                      'markdown.extensions.codehilite',
                                                      'markdown.extensions.extra',
@@ -52,7 +47,6 @@ def main():
                            t_content=content,
                            t_username=username,
                            t_theme=get_theme())
-
 
 if __name__ == '__main__':
     app.run(debug=True, port=5050)

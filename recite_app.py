@@ -1,7 +1,6 @@
 from flask import render_template, request, session, redirect, Blueprint, abort
 import uuid
 import time
-
 from lib import dbConnecter, defender
 import os
 
@@ -41,8 +40,6 @@ recite_app.secret_key = os.getenv('SECRET_KEY')
     );
 '''
 
-
-
 def get_theme():
     theme = session.get('theme')
     if theme == None:
@@ -59,7 +56,6 @@ def toList(str):
         else:
             t += i
     return l
-
 
 def toStr(l):
     str = ''
@@ -87,7 +83,6 @@ def reciter():
         else:
             print(222222)
             # lists_o = db.lists.find({'difficulty': difficulty, 'o': True})
-
             list_oo = dbConnecter.read_data('lists', 'difficulty', difficulty)
             for i in list_oo:
                 if i['o']:
@@ -118,7 +113,6 @@ def reciter():
             # lists_u = db.lists.find({'listname': key, 'difficulty': difficulty, 'o': False})
             # lists_u = list(lists_u)
             list_oo = dbConnecter.read_data('lists', 'listname', key)
-
             for i in list_oo:
                 if i['difficulty'] == difficulty:
                     if i['o']:
@@ -137,7 +131,6 @@ def reciter():
                            t_theme=get_theme(),
                            t_show_mode=show_mode)
 
-
 @recite_app.route('/create') # 提供创建词汇表的页面
 def create():
     if session.get('username') == None:
@@ -151,7 +144,6 @@ def create():
                            t_admin=userdic['admin'],
                            t_theme=get_theme(),
                            t_captcha_image=captcha_image)
-
 
 @recite_app.route('/check_create', methods=['POST']) # 处理提供的创建信息
 def check_create():
@@ -227,7 +219,6 @@ def check_create():
     id = str(uuid.uuid1())
     now = time.localtime()
     now_temp = time.strftime("%Y-%m-%d %H:%M", now)
-
     # db.lists.insert_one({'id': id,
     #                     'username': session.get('username'),
     #                     'listname': listname,
@@ -241,9 +232,8 @@ def check_create():
     dbConnecter.insert_data('lists',
                             '(id, username, listname, difficulty, en, zh, timef, o, sen, sm)',
                             (id, session.get('username'), listname, difficulty, ens, zhs, now_temp, o, sens, sm))
-    print('111111111111--------------------')
+    # print('111111111111--------------------')
     return redirect('/reciter')
-
 
 # @recite_app.route('/prepare_recite', methods=['POST']) # 准备开始背诵
 # def prepare_recite():
@@ -276,7 +266,6 @@ def check_create():
     # db.temp.delete_one({'username': session.get('username')})
     # db.temp.insert_one(dic)
     # return redirect('/recite')
-
 
 @recite_app.route('/recite', methods=['GET']) # 背诵
 def recite():
@@ -342,8 +331,6 @@ def recite():
                                t_theme=get_theme(),
                                t_listname=res['listname'])
 
-
-#
 # @recite_app.route('/check_recite', methods=['GET']) # 检查背诵信息
 # def check_recite():
 #     if session.get('username') == None:
@@ -439,7 +426,6 @@ def recite():
 #                                    t_listname=dic['listname'])
 #     return redirect('/recite')
 
-
 # @recite_app.route('/show_tip')
 # def show_tip():
 #     if session.get('username') == None:
@@ -493,8 +479,6 @@ def recite():
 #     wordlist['o'] = o
 #     db.lists.update({'id': id}, wordlist)
 #     return redirect('/lists')
-#
-
 
 @recite_app.route('/show_list', methods=['GET']) # 展示表格
 def show_list():
@@ -518,7 +502,6 @@ def show_list():
                            t_admin=admin,
                            t_theme=get_theme())
 
-
 @recite_app.route('/check_del_list', methods=['GET'])
 def check_del_list():
     if session.get('username') == None:
@@ -531,7 +514,6 @@ def check_del_list():
                            # t_listname=db.lists.find_one({'id': id})['listname']
                            t_listname=dbConnecter.read_data('lists', 'id', id)[0]['listname']
                            )
-
 
 @recite_app.route('/del_list', methods=['GET']) # 删除表格
 def del_list():
@@ -555,7 +537,6 @@ def del_list():
         return redirect('/lists')
     else:
         return 'No permission'
-
 
 @recite_app.route('/modify_list', methods=['GET']) # provide modification page
 def modify_list():
@@ -593,7 +574,6 @@ def modify_list():
                                t_error=errorr)
     else:
         return 'No permission'
-
 
 @recite_app.route('/modifier', methods=['POST']) # check the modification infomation
 def modifier():

@@ -11,7 +11,6 @@ user_app.secret_key = os.getenv('SECRET_KEY')
 # client = pymongo.MongoClient()
 # db = client.reciter
 
-
 ''''
     集合名users
 
@@ -32,13 +31,11 @@ user_app.secret_key = os.getenv('SECRET_KEY')
     );
 '''
 
-
 def get_theme():
     theme = session.get('theme')
     if theme == None:
         theme = 'white'
     return theme
-
 
 @user_app.route('/login') # 提供登录页面
 def login():
@@ -47,7 +44,6 @@ def login():
     return render_template('user/login.html',
                            t_theme=get_theme(),
                            t_captcha_image=captcha_image)
-
 
 @user_app.route('/check_login', methods=['POST']) # 检查登录信息
 def check_login():
@@ -75,7 +71,6 @@ def check_login():
         session['theme'] = res[0]['theme']
         return redirect('/')
 
-
 @user_app.route('/register') # 提供注册页面
 def register():
     captcha_text, captcha_image = defender.generate_captcha()
@@ -83,7 +78,6 @@ def register():
     return render_template('user/register.html',
                            t_theme=get_theme(),
                            t_captcha_image=captcha_image)
-
 
 @user_app.route('/check_register', methods=['POST']) # 处理注册信息
 def check_register():
@@ -139,7 +133,6 @@ def check_register():
                                t_error='The username is already exist.',
                                t_theme=get_theme(),
                                t_captcha_image=captcha_image)
-    
 
 @user_app.route('/profile') # 提供用户信息页面
 def profile():
@@ -148,12 +141,9 @@ def profile():
     username = request.args.get('username')
     # userdic = db.users.find_one({'username': username})
     # userlist = db.lists.find({'username': username})
-    print(username)
+    # print(username)
     userdic = dbConnecter.read_data('users', 'username', username)[0]
-    print(userdic)
-
-
-
+    # print(userdic)
     # userlist = list(userlist)
     # articleslist = list(db.articles.find({'username': username}))
     intro = userdic['intro']
@@ -178,7 +168,6 @@ def profile():
                            t_admin=admin,
                            t_theme=get_theme(),
                            t_captcha_image=captcha_image)
-
 
 @user_app.route('/change_password', methods=['POST']) # 处理更改密码信息
 def change_password():
@@ -209,7 +198,6 @@ def change_password():
                                t_error='Your original password is wrong',
                                t_theme=get_theme())
 
-
 @user_app.route('/change_theme', methods=['POST']) # 更改颜色主题
 def change_theme():
     theme = request.form.get('theme')
@@ -220,7 +208,6 @@ def change_theme():
     # db.users.update({'username': session['username']}, dic)
     dic = dbConnecter.update_data('users', 'username', session['username'], 'theme', theme)
     return redirect('/profile?username=' + session['username'])
-    
 
 @user_app.route('/userlist')
 def userlist():
@@ -231,7 +218,6 @@ def userlist():
                            t_username=session.get('username'),
                            t_dics=dics,
                            t_theme=get_theme())
-
 
 @user_app.route('/modify_intro', methods=['GET']) # 提供修改用户简介页面
 def modify_intro():
@@ -252,7 +238,6 @@ def modify_intro():
     else:
         return 'No permission'
 
-
 # 定义一个函数，用于提取Markdown中的代码块
 def extract_code_blocks(text):
     code_blocks = {}
@@ -267,13 +252,11 @@ def extract_code_blocks(text):
         counter += 1
     return text, code_blocks
 
-
 # 定义一个函数，用于恢复代码块
 def restore_code_blocks(text, code_blocks):
     for placeholder, code in code_blocks.items():
         text = text.replace(placeholder, code)
     return text
-
 
 def attack_cleaner(con):
     # 提取代码块
@@ -283,7 +266,6 @@ def attack_cleaner(con):
     # 恢复代码块
     con = restore_code_blocks(cleaned_markdown, code_blocks)
     return con
-
 
 @user_app.route('/modifier_intro', methods=['POST'])
 def modifier_intro():
@@ -300,7 +282,6 @@ def modifier_intro():
                                t_theme=get_theme(),
                                t_captcha_image=captcha_image,
                                t_error='Wrong graph validate code')
-
     intro = attack_cleaner(request.form.get('intro'))
     # dic = db.users.find_one({'username': username})
     # dic = dbConnecter.read_data('users', 'username', username)[0]
